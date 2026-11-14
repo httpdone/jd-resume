@@ -113,6 +113,10 @@ STAR、ATS 关键词、不编造经历等属于行业通用做法，不算对某
 
 ## License
 
-[MIT](LICENSE) © 2026 Yuri Liu
+[MIT](LICENSE) © 2026
 
 演示数据（「张明」等）为虚构示例。
+
+## 社区
+
+有问题、建议，或想一起折腾？欢迎来 **[linux.do](https://linux.do)** 社区交流反馈。
