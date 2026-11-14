@@ -1,0 +1,25 @@
+html,
+body { margin: 0; padding: 0; }
+body { background: #ededed; }
+.main { background-image: none !important; }
+@page { size: A4; margin: 0; }
+
+@media screen {
+  body { padding: 16px 0; }
+}
+
+@media print {
+  html,
+  body { background: #fff; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #cv-container { margin-top: 0 !important; }
+  .main {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .main ~ .main {
+    break-before: page;
+    page-break-before: always;
+  }
+}

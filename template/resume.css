@@ -1,0 +1,247 @@
+/* ==========================================================================
+   简历工作台 · 经典蓝（A4）
+   页面结构：
+     #cv-container
+       .main[data-resume-page]          一页 A4 纸
+         .header-line                   顶部色条
+         .content > div > .content-scroll   正文（多页时靠负 margin-top 错位显示）
+         .cover / .cover.rs-cover-clear 分页遮罩（高度由分页脚本写入）
+   字号、行高、页边距、强调色读取 lib/templates.mjs 写入的 --rp-* 变量，
+   这里给出经典蓝的默认值。
+   ========================================================================== */
+
+#cv-container {
+  --rs-accent: var(--rp-accent, #4183ff);
+  --rs-ink: #000;
+  --rs-paper: #fff;
+  --rs-text-size: var(--rp-font-size, 12px);
+  --rs-heading-size: var(--rp-title-size, 14px);
+  --rs-name-size: var(--rp-name-size, 22px);
+  --rs-base-line: 17px;                     /* 页面默认行高 */
+  --rs-line: var(--rp-line, 20.4px);       /* 段落、列表、条目标题的行高 */
+  --rs-row-gap: calc(var(--rs-line) * 0.28);
+  --rs-page-y: var(--rp-pad-y, 12mm);
+  --rs-page-x: var(--rp-pad-x, 12mm);
+  --rs-inset: 13mm;                         /* 正文块在页边距内再缩进的距离 */
+  --rs-band: 16px;                          /* 顶部色条高度 */
+  font-family: var(--rp-font, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", "Hiragino Sans GB", sans-serif);
+}
+
+/* ---------- 基础 ---------- */
+
+html, body { margin: 0; background: #f5f5f7; }
+
+#cv-container,
+:where(#cv-container) *,
+:where(#cv-container) *::before,
+:where(#cv-container) *::after { box-sizing: border-box; }
+
+/* 零特异性的清零，任何组件规则都能覆盖 */
+:where(#cv-container) :where(div, span, p, ul, ol, li, label, i, b, strong, h1, h2, h3, h4, h5, h6, img) {
+  margin: 0;
+  padding: 0;
+  border: 0 solid transparent;
+}
+:where(#cv-container) :where(i) { font-style: normal; }
+:where(#cv-container) :where(img) { display: block; max-width: 100%; height: auto; }
+
+/* ---------- 纸张 ---------- */
+
+:where(#cv-container) .main {
+  position: relative;
+  width: 100%;
+  height: 297mm;
+  margin-bottom: 16px;
+  padding: var(--rs-page-y) var(--rs-page-x);
+  background: var(--rs-paper);
+  color: var(--rs-ink);
+  border-radius: 2px;
+  font-size: var(--rs-text-size);
+  line-height: var(--rs-base-line);
+}
+:where(#cv-container) .main:last-child { margin-bottom: 0; }
+
+/* 底部页边距的白条：盖住溢出到下边距里的文字 */
+:where(#cv-container) .main::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  height: var(--rs-page-y);
+  border-radius: 0 0 2px 2px;
+}
+
+:where(#cv-container) .header-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  height: var(--rs-band);
+  background-color: var(--rs-accent);
+}
+
+:where(#cv-container) .content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+:where(#cv-container) .content > div { height: 100%; max-width: 100%; overflow: hidden; }
+:where(#cv-container) .content-scroll { position: relative; display: flex; flex-direction: column; }
+
+:where(#cv-container) .cover {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  padding-bottom: var(--rs-page-y);
+  background-color: var(--rs-paper);
+  border-radius: 0 0 2px 2px;
+}
+:where(#cv-container) .cover.rs-cover-clear { z-index: 4; background-color: transparent; }
+
+/* 正文块左右缩进 */
+:where(#cv-container) .user,
+:where(#cv-container) .module-title-wrapper,
+:where(#cv-container) .section-item-container {
+  margin-left: var(--rs-inset);
+  margin-right: var(--rs-inset);
+}
+
+/* ---------- 页眉：姓名、联系方式、头像、校徽 ---------- */
+
+:where(#cv-container) .user {
+  position: relative;
+  margin-bottom: 16px;
+  padding: 4mm 0 8px;
+}
+:where(#cv-container) .user-info {
+  position: relative;
+  z-index: 2;
+  width: 70%;
+  min-height: 96px;
+  text-align: left;
+}
+:where(#cv-container) .user.avatar .user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+:where(#cv-container) .user.avatar.school-logo .user-info { margin: 0 auto; }
+:where(#cv-container) .user.right .user-info { text-align: right; }
+
+:where(#cv-container) .user-name {
+  margin-bottom: 10px;
+  font-size: var(--rs-name-size);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+:where(#cv-container) .profile-item > span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: var(--rs-line);
+}
+:where(#cv-container) .profile-item > span::after {
+  content: "|";
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  margin: 0 6px 0 2px;
+}
+:where(#cv-container) .profile-item > span:last-child::after { display: none; }
+:where(#cv-container) .profile-item > span > i { display: none; }   /* 图标位：经典蓝不显示 */
+:where(#cv-container) .attr-name { display: inline; }
+
+:where(#cv-container) .user-avatar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
+:where(#cv-container) .user.avatar.school-logo:not(.right) .user-avatar { left: 0; right: auto; }
+:where(#cv-container) .user-avatar-image { position: relative; z-index: 1; width: 80px; object-fit: contain; }
+
+:where(#cv-container) .user-school {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  max-width: 176px;
+  max-height: 48px;
+}
+:where(#cv-container) .user.left .user-school { left: auto; right: 0; }
+:where(#cv-container) .user-school img { max-width: 176px; max-height: 48px; }
+
+/* ---------- 模块与模块标题 ---------- */
+
+:where(#cv-container) .option { width: 100%; padding-top: 10px; font-size: var(--rs-text-size); }
+:where(#cv-container) .option:first-child { margin-top: 6px; padding-top: 0; }
+
+:where(#cv-container) .module-title-wrapper [type] {
+  margin-bottom: 8.5px;
+  border-bottom: 1px solid var(--rs-accent);
+  text-align: left;
+}
+:where(#cv-container) .module-title-wrapper .title {
+  display: inline-block;
+  width: max-content;
+  margin-bottom: 3.4px;
+  padding-bottom: 3.25px;
+  color: var(--rs-accent);
+  font-size: var(--rs-heading-size);
+  font-weight: 600;
+}
+
+/* ---------- 条目 ---------- */
+
+:where(#cv-container) .section-item-container { position: relative; }
+
+:where(#cv-container) .menu-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--rs-row-gap);
+  line-height: var(--rs-line);
+}
+:where(#cv-container) .menu-title .left {
+  display: flex;
+  flex: 1 1 0%;
+  align-items: center;
+  min-width: 0;
+  margin-right: 10px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
+/* 单位 / 项目名加粗 */
+:where(#cv-container) .rs-bold { font-weight: 700; }
+:where(#cv-container) .menu-title .left > .rs-bold { display: inline-block; word-break: break-all; }
+:where(#cv-container) .menu-title .right {
+  flex: 0 0 auto;
+  padding-right: 1px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+:where(#cv-container) .rs-dot { display: none; }
+
+:where(#cv-container) .menu-content-wrapper { position: relative; }
+:where(#cv-container) .menu-content { word-break: break-word; }
+:where(#cv-container) .menu-content p,
+:where(#cv-container) .menu-content li {
+  padding-bottom: var(--rs-row-gap);
+  line-height: var(--rs-line);
+}
+:where(#cv-container) .menu-content ul,
+:where(#cv-container) .menu-content ol { padding-left: 20px; }
+:where(#cv-container) .menu-content ul > li { list-style: disc; }
+:where(#cv-container) .menu-content ol > li { list-style: decimal; }
+:where(#cv-container) .menu-content a { color: var(--rs-accent); text-decoration: none; }
+:where(#cv-container) .menu-content b,
+:where(#cv-container) .menu-content strong { font-weight: 900; }
+:where(#cv-container) .menu-content sub { font-size: smaller; vertical-align: sub; }
+:where(#cv-container) .menu-content sup { font-size: smaller; vertical-align: super; }

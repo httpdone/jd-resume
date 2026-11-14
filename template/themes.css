@@ -1,0 +1,321 @@
+/* ------------------------------------------------------------------
+   其他主题样式（不改 body 结构）。选择器均挂在 #cv-container[data-rp-theme]
+   上，用 !important 覆盖经典蓝（resume.css）的基础样式。
+   ------------------------------------------------------------------ */
+
+/* 通用：模块标题与资料行里的强调色跟随 --rp-accent */
+#cv-container[data-rp-theme] .header-line { background-color: var(--rp-accent) !important; }
+
+/* ========== 简约黑白 ========== */
+#cv-container[data-rp-theme="minimal"] .main {
+  background: #fff !important;
+  color: #1a1a1a !important;
+  box-shadow: none !important;
+}
+#cv-container[data-rp-theme="minimal"] .header-line {
+  height: 3px !important;
+  background: #111 !important;
+}
+#cv-container[data-rp-theme="minimal"] .user { padding-top: 2mm !important; padding-bottom: 6px !important; }
+#cv-container[data-rp-theme="minimal"] .user .user-name {
+  font-weight: 700 !important;
+  letter-spacing: 0.18em;
+  color: #111 !important;
+}
+#cv-container[data-rp-theme="minimal"] .profile-item,
+#cv-container[data-rp-theme="minimal"] .profile-item span,
+#cv-container[data-rp-theme="minimal"] .attr-name { color: #333 !important; }
+#cv-container[data-rp-theme="minimal"] .attr-icon,
+#cv-container[data-rp-theme="minimal"] .attr-tag,
+#cv-container[data-rp-theme="minimal"] .attr-point { display: none !important; }
+#cv-container[data-rp-theme="minimal"] .option .rs-heading .rs-heading-inner .title,
+#cv-container[data-rp-theme="minimal"] .option .title {
+  color: #111 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.22em;
+  border-bottom: 1px solid #111 !important;
+  padding-bottom: 3px !important;
+  background: none !important;
+}
+#cv-container[data-rp-theme="minimal"] .option .rs-heading .rs-heading-inner {
+  border: 0 !important;
+  background: none !important;
+}
+#cv-container[data-rp-theme="minimal"] .menu-title { color: #111 !important; }
+#cv-container[data-rp-theme="minimal"] .main .cover { background: #fff !important; }
+
+/* ========== 商务深蓝（左侧色轨 + 深色页首） ==========
+   色轨用 .main::before 绝对定位贴在页面左缘、铺满 297mm 高度。
+   不用 background-image：print.css 会清掉 .main 的背景图，且
+   background 画在 content-box 时会随 padding 一起右移，永远压住正文。 */
+#cv-container[data-rp-theme="navy"] {
+  --rp-navy-rail: 12mm;
+  --rp-navy: #0c1f3d;
+}
+#cv-container[data-rp-theme="navy"] .main {
+  background-color: #fff !important;
+  background-image: none !important;
+  color: #132033 !important;
+  /* 左：色轨宽度 + 与右侧相同的页边距，正文左右留白对称 */
+  padding-left: calc(var(--rp-navy-rail) + var(--rp-pad-x)) !important;
+  padding-right: var(--rp-pad-x) !important;
+  overflow: hidden;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+#cv-container[data-rp-theme="navy"] .main::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--rp-navy-rail);
+  background: var(--rp-navy);
+  z-index: 5;
+  pointer-events: none;
+}
+/* 分页遮罩不要盖住左侧色轨 */
+#cv-container[data-rp-theme="navy"] .main .cover,
+#cv-container[data-rp-theme="navy"] .main::after {
+  left: var(--rp-navy-rail) !important;
+  right: 0 !important;
+  width: auto !important;
+  background: #fff !important;
+}
+#cv-container[data-rp-theme="navy"] .main .content {
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+#cv-container[data-rp-theme="navy"] .header-line { display: none !important; height: 0 !important; }
+/* 页眉完全待在内容盒里，不用负边距，避免右侧溢出 */
+#cv-container[data-rp-theme="navy"] .user {
+  background: var(--rp-navy) !important;
+  color: #f4f7fb !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 4mm 0 !important;
+  /* 左侧给 80px 头像留位，头像绝对定位在 padding 里 */
+  padding: 6mm 28mm 6mm 30mm !important;
+  position: relative;
+  overflow: hidden;
+}
+#cv-container[data-rp-theme="navy"] .user .user-avatar,
+#cv-container[data-rp-theme="navy"] .user.left.avatar.school-logo .user-avatar {
+  left: 5mm !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+#cv-container[data-rp-theme="navy"] .user .user-avatar .user-avatar-image {
+  width: 20mm !important;
+  height: 20mm !important;
+  object-fit: cover;
+  background: #e8eef5;
+}
+#cv-container[data-rp-theme="navy"] .user .user-info,
+#cv-container[data-rp-theme="navy"] .user.left.avatar.school-logo .user-info {
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+#cv-container[data-rp-theme="navy"] .user .user-school,
+#cv-container[data-rp-theme="navy"] .user.left.avatar.school-logo .user-school {
+  display: block !important;
+  position: absolute !important;
+  right: 6mm !important;
+  left: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 18mm !important;
+  height: 18mm !important;
+  max-width: 18mm !important;
+  max-height: 18mm !important;
+  overflow: hidden !important;
+  z-index: 2;
+}
+#cv-container[data-rp-theme="navy"] .user .user-school img {
+  width: 18mm !important;
+  height: 18mm !important;
+  object-fit: contain !important;
+}
+#cv-container[data-rp-theme="navy"] .user.rp-no-school .user-school { display: none !important; }
+#cv-container[data-rp-theme="navy"] .user .user-name {
+  color: #fff !important;
+  letter-spacing: 0.12em;
+  font-weight: 700 !important;
+}
+#cv-container[data-rp-theme="navy"] .user .profile-item,
+#cv-container[data-rp-theme="navy"] .user .profile-item span,
+#cv-container[data-rp-theme="navy"] .user .attr-name { color: #d7e2f0 !important; }
+#cv-container[data-rp-theme="navy"] .user .attr-tag { display: none !important; }
+#cv-container[data-rp-theme="navy"] .user .attr-icon { color: #8fb0d6 !important; }
+#cv-container[data-rp-theme="navy"] .option .rs-heading .rs-heading-inner .title,
+#cv-container[data-rp-theme="navy"] .option .title {
+  color: #0c1f3d !important;
+  font-weight: 700 !important;
+  border-bottom: 1.5px solid #0c1f3d !important;
+  letter-spacing: 0.08em;
+  background: none !important;
+}
+#cv-container[data-rp-theme="navy"] .menu-title .rs-bold,
+#cv-container[data-rp-theme="navy"] .menu-title { color: #0c1f3d !important; }
+
+/* ========== 互联网科技 ========== */
+#cv-container[data-rp-theme="tech"] .main {
+  background: #fff !important;
+  color: #0f172a !important;
+}
+#cv-container[data-rp-theme="tech"] .header-line {
+  height: 7px !important;
+  background: linear-gradient(90deg, #06b6d4, #2563eb 55%, #7c3aed) !important;
+}
+#cv-container[data-rp-theme="tech"] .user .user-name {
+  color: #0f172a !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em;
+}
+#cv-container[data-rp-theme="tech"] .option .rs-heading .rs-heading-inner {
+  background: none !important;
+  border: 0 !important;
+}
+#cv-container[data-rp-theme="tech"] .option .rs-heading .rs-heading-inner .title,
+#cv-container[data-rp-theme="tech"] .option .title {
+  color: #0e7490 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em;
+  border: 0 !important;
+  border-left: 3px solid var(--rp-accent) !important;
+  padding: 1px 0 1px 8px !important;
+  background: #ecfeff !important;
+}
+#cv-container[data-rp-theme="tech"] .menu-title .rs-bold { color: #155e75 !important; }
+#cv-container[data-rp-theme="tech"] .main .cover { background: #fff !important; }
+
+/* ========== 学术研究 ========== */
+#cv-container[data-rp-theme="academic"] .main {
+  background: #fffcf7 !important;
+  color: #1f2933 !important;
+  box-shadow: none !important;
+}
+#cv-container[data-rp-theme="academic"] .header-line { display: none !important; height: 0 !important; }
+#cv-container[data-rp-theme="academic"] .user {
+  text-align: center !important;
+  border-bottom: 2.4px solid #1f2933;
+  padding-bottom: 8px !important;
+  margin-bottom: 2px !important;
+}
+#cv-container[data-rp-theme="academic"] .user .user-info,
+#cv-container[data-rp-theme="academic"] .user .user-info.has-profile {
+  text-align: center !important;
+  width: 100%;
+}
+#cv-container[data-rp-theme="academic"] .user .user-name {
+  font-family: "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "Times New Roman", serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.35em;
+  color: #1f2933 !important;
+  text-align: center !important;
+  margin-left: 0.35em;
+}
+#cv-container[data-rp-theme="academic"] .profile-item {
+  justify-content: center !important;
+  text-align: center !important;
+}
+#cv-container[data-rp-theme="academic"] .attr-tag,
+#cv-container[data-rp-theme="academic"] .attr-point { display: none !important; }
+#cv-container[data-rp-theme="academic"] .option .rs-heading .rs-heading-inner .title,
+#cv-container[data-rp-theme="academic"] .option .title {
+  font-family: "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "Times New Roman", serif !important;
+  color: #1f2933 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.28em;
+  text-align: center;
+  border: 0 !important;
+  border-bottom: 1px solid #1f2933 !important;
+  background: none !important;
+  padding-bottom: 2px !important;
+}
+#cv-container[data-rp-theme="academic"] .main .cover { background: #fffcf7 !important; }
+
+/* ========== 国际商务 / 外企 ========== */
+#cv-container[data-rp-theme="international"] .main {
+  background: #fff !important;
+  color: #1c1917 !important;
+}
+#cv-container[data-rp-theme="international"] .header-line { display: none !important; height: 0 !important; }
+#cv-container[data-rp-theme="international"] .user {
+  border-bottom: 1px solid #1e3a5f;
+  padding-bottom: 8px !important;
+}
+#cv-container[data-rp-theme="international"] .user .user-name {
+  font-weight: 600 !important;
+  letter-spacing: 0.02em;
+  color: #1e3a5f !important;
+  font-size: calc(var(--rp-name-size) + 4px) !important;
+}
+#cv-container[data-rp-theme="international"] .attr-tag,
+#cv-container[data-rp-theme="international"] .attr-point { display: none !important; }
+#cv-container[data-rp-theme="international"] .option .rs-heading .rs-heading-inner .title,
+#cv-container[data-rp-theme="international"] .option .title {
+  color: #1e3a5f !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border: 0 !important;
+  border-bottom: 0.7px solid #1e3a5f !important;
+  background: none !important;
+  padding-bottom: 2px !important;
+}
+#cv-container[data-rp-theme="international"] .menu-title { color: #1e3a5f !important; }
+#cv-container[data-rp-theme="international"] .main .cover { background: #fff !important; }
+
+/* ========== 彩条标题 ========== */
+#cv-container[data-rp-theme="colorband"] .main {
+  background: #fff !important;
+  color: #1c1917 !important;
+}
+#cv-container[data-rp-theme="colorband"] .header-line {
+  height: 10px !important;
+  background: var(--rp-accent) !important;
+}
+#cv-container[data-rp-theme="colorband"] .user .user-name {
+  color: var(--rp-accent) !important;
+  font-weight: 800 !important;
+}
+#cv-container[data-rp-theme="colorband"] .option .rs-heading .rs-heading-inner {
+  background: none !important;
+  border: 0 !important;
+  margin-bottom: 6px !important;
+}
+#cv-container[data-rp-theme="colorband"] .option .rs-heading .rs-heading-inner .title,
+#cv-container[data-rp-theme="colorband"] .option .title {
+  background: var(--rp-accent) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.16em;
+  padding: 3px 10px 2px !important;
+  border: 0 !important;
+  display: block;
+  box-decoration-break: clone;
+}
+#cv-container[data-rp-theme="colorband"] .main .cover { background: #fff !important; }
+
+/* 侧栏装饰（若渲染层插入了 .rp-side） */
+#cv-container .rp-side {
+  display: none;
+}
+#cv-container[data-rp-theme="navy"] .rp-side {
+  display: none; /* 深蓝主题改用 CSS 色带，避免与资料区重复 */
+}
+
+/* 结构编辑：隐藏模块 / 空字段。编辑态可见虚线，预览与 PDF 不输出 */
+.option.rp-mod-hidden { display: none !important; }
+body.rp-edit .option.rp-mod-hidden { display: block !important; opacity: .48; outline: 1px dashed #94a3b8; outline-offset: 2px; }
+.menu-title.rp-field-hidden { display: none !important; }
+
+/* v4.2 编辑归一化：.menu-title .left 是 flex 容器，混排的文字/加粗/换行会被拆成一列列 flex 子项（看起来"竖着分开"）。
+   编辑器会把这类内容包进一个 .rp-flow 块，让它恢复正常的横向文字流。 */
+.rp-flow { display: block; min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; }

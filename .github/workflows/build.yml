@@ -1,0 +1,73 @@
+name: Build executables
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            label: linux-x64
+          - os: windows-latest
+            label: windows-x64
+          - os: macos-latest      # Apple Silicon
+            label: macos-arm64
+          - os: macos-15-intel    # Intel
+            label: macos-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build single executable
+        run: node tools/build-sea.mjs ${{ matrix.label }}
+
+      - name: Smoke test (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          ./dist/resume-platform-${{ matrix.label }}/resume-platform --port 4321 --no-open &
+          sleep 3
+          curl -fsS -o /dev/null http://127.0.0.1:4321/
+          kill %1
+
+      - name: Zip (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path dist/resume-platform-${{ matrix.label }} -DestinationPath dist/resume-platform-${{ matrix.label }}.zip
+
+      - name: Zip (macOS / Linux)
+        if: runner.os != 'Windows'
+        working-directory: dist
+        run: zip -qry resume-platform-${{ matrix.label }}.zip resume-platform-${{ matrix.label }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resume-platform-${{ matrix.label }}
+          path: dist/resume-platform-${{ matrix.label }}.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.zip
+          generate_release_notes: true

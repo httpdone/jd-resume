@@ -1,0 +1,591 @@
+[
+  {
+    "id": "f992f63dda85",
+    "createdAt": "2026-11-09T16:51:04.811Z",
+    "company": "字节跳动",
+    "role": "大模型应用开发实习",
+    "link": "https://jobs.bytedance.com",
+    "text": "岗位：大模型应用开发实习生（Agent 方向）\n岗位职责：\n1. 负责基于大模型的 Agent / RAG 应用研发，参与知识库问答、智能客服等业务落地；\n2. 参与 Prompt 工程、工具调用（Function Calling）与评测体系建设；\n3. 负责后端服务开发与性能优化，保障线上服务稳定。\n任职要求：\n1. 本科及以上学历，计算机相关专业，每周实习 4 天以上，实习 3 个月以上；\n2. 熟悉 Python 或 Java，具备扎实的数据结构与算法基础；\n3. 熟悉 LangChain / LlamaIndex 等框架，了解向量数据库（Milvus、FAISS）与检索重排；\n4. 熟悉 MySQL、Redis，了解 Docker；\n加分项：有 LoRA 微调或模型评测经验；有开源项目或技术博客；熟悉 Kubernetes。",
+    "baseSlug": "张明",
+    "updatedAt": "2026-11-09T16:51:13.837Z",
+    "analysis": {
+      "company": "字节跳动",
+      "role": "大模型应用开发实习",
+      "roleType": "大模型 / AI 应用",
+      "level": "实习",
+      "location": "",
+      "summary": "（演示）根据 JD 关键词推断：需要具备 Python、Java、SQL、大模型 等能力的候选人。",
+      "hardRequirements": [
+        {
+          "text": "本科及以上学历，计算机相关专业，每周实习 4 天以上，实习 3 个月以上；",
+          "weight": "high",
+          "quote": "本科及以上学历，计算机相关专业，每周实习 4 天以上，实习 3 个月以上；"
+        },
+        {
+          "text": "熟悉 Python 或 Java，具备扎实的数据结构与算法基础；",
+          "weight": "high",
+          "quote": "熟悉 Python 或 Java，具备扎实的数据结构与算法基础；"
+        },
+        {
+          "text": "熟悉 LangChain / LlamaIndex 等框架，了解向量数据库（Milvus、FAISS）与检索重排；",
+          "weight": "medium",
+          "quote": "熟悉 LangChain / LlamaIndex 等框架，了解向量数据库（Milvus、FAISS）与检索重排；"
+        },
+        {
+          "text": "熟悉 MySQL、Redis，了解 Docker；",
+          "weight": "medium",
+          "quote": "熟悉 MySQL、Redis，了解 Docker；"
+        }
+      ],
+      "responsibilities": [
+        "负责基于大模型的 Agent / RAG 应用研发，参与知识库问答、智能客服等业务落地；",
+        "参与 Prompt 工程、工具调用（Function Calling）与评测体系建设；",
+        "负责后端服务开发与性能优化，保障线上服务稳定。"
+      ],
+      "skills": [
+        {
+          "name": "Python",
+          "weight": "high"
+        },
+        {
+          "name": "Java",
+          "weight": "high"
+        },
+        {
+          "name": "SQL",
+          "weight": "high"
+        },
+        {
+          "name": "大模型",
+          "weight": "high"
+        },
+        {
+          "name": "RAG",
+          "weight": "medium"
+        },
+        {
+          "name": "Agent",
+          "weight": "medium"
+        },
+        {
+          "name": "LangChain",
+          "weight": "medium"
+        },
+        {
+          "name": "LlamaIndex",
+          "weight": "medium"
+        },
+        {
+          "name": "LoRA",
+          "weight": "low"
+        },
+        {
+          "name": "微调",
+          "weight": "low"
+        }
+      ],
+      "bonus": [
+        "加分项：有 LoRA 微调或模型评测经验；有开源项目或技术博客；熟悉 Kubernetes。"
+      ],
+      "hiddenTests": [
+        "（推断）会深挖项目中Python的实际使用深度",
+        "（推断）会考察基础算法与工程能力"
+      ],
+      "keywords": [
+        {
+          "word": "Python",
+          "weight": "high",
+          "synonyms": []
+        },
+        {
+          "word": "Java",
+          "weight": "high",
+          "synonyms": []
+        },
+        {
+          "word": "SQL",
+          "weight": "high",
+          "synonyms": []
+        },
+        {
+          "word": "大模型",
+          "weight": "high",
+          "synonyms": []
+        },
+        {
+          "word": "RAG",
+          "weight": "high",
+          "synonyms": []
+        },
+        {
+          "word": "Agent",
+          "weight": "medium",
+          "synonyms": []
+        },
+        {
+          "word": "LangChain",
+          "weight": "medium",
+          "synonyms": []
+        },
+        {
+          "word": "LlamaIndex",
+          "weight": "medium",
+          "synonyms": []
+        },
+        {
+          "word": "LoRA",
+          "weight": "medium",
+          "synonyms": []
+        },
+        {
+          "word": "微调",
+          "weight": "medium",
+          "synonyms": []
+        },
+        {
+          "word": "Prompt",
+          "weight": "low",
+          "synonyms": []
+        },
+        {
+          "word": "评测",
+          "weight": "low",
+          "synonyms": []
+        },
+        {
+          "word": "向量数据库",
+          "weight": "low",
+          "synonyms": []
+        },
+        {
+          "word": "检索",
+          "weight": "low",
+          "synonyms": []
+        },
+        {
+          "word": "重排",
+          "weight": "low",
+          "synonyms": []
+        },
+        {
+          "word": "MySQL",
+          "weight": "low",
+          "synonyms": []
+        }
+      ],
+      "riskFlags": []
+    },
+    "match": {
+      "score": 62,
+      "verdict": "risky",
+      "verdictText": "（演示）关键词覆盖 7/16，缺口较多，谨慎投递",
+      "dimensions": [
+        {
+          "name": "硬性条件",
+          "score": 15,
+          "max": 20,
+          "comment": "演示规则"
+        },
+        {
+          "name": "技能关键词",
+          "score": 9,
+          "max": 20,
+          "comment": "覆盖 7 个"
+        },
+        {
+          "name": "项目相关度",
+          "score": 11,
+          "max": 25,
+          "comment": "演示规则"
+        },
+        {
+          "name": "成果量化",
+          "score": 10,
+          "max": 15,
+          "comment": "演示规则"
+        },
+        {
+          "name": "职级匹配",
+          "score": 8,
+          "max": 10,
+          "comment": "演示规则"
+        },
+        {
+          "name": "表达清晰",
+          "score": 4,
+          "max": 5,
+          "comment": ""
+        },
+        {
+          "name": "ATS 可读",
+          "score": 4,
+          "max": 5,
+          "comment": ""
+        }
+      ],
+      "matrix": [
+        {
+          "requirement": "本科及以上学历，计算机相关专业，每周实习 4 天以上，实习 3 个月以上；",
+          "weight": "high",
+          "evidence": "",
+          "itemId": "",
+          "type": "none",
+          "status": "尚未体现",
+          "action": "若确有相关经历请补充，否则不要硬写"
+        },
+        {
+          "requirement": "熟悉 Python 或 Java，具备扎实的数据结构与算法基础；",
+          "weight": "high",
+          "evidence": "Java / Spring Boot、Python、MySQL、Redis、Linux、Docker",
+          "itemId": "skill_list-38802760",
+          "type": "weak",
+          "status": "表述偏弱",
+          "action": "在项目经历中补充该技能的真实使用场景"
+        },
+        {
+          "requirement": "熟悉 LangChain / LlamaIndex 等框架，了解向量数据库（Milvus、FAISS）与检索重排；",
+          "weight": "medium",
+          "evidence": "Java / Spring Boot、Python、MySQL、Redis、Linux、Docker",
+          "itemId": "skill_list-38802760",
+          "type": "weak",
+          "status": "表述偏弱",
+          "action": "在项目经历中补充该技能的真实使用场景"
+        },
+        {
+          "requirement": "熟悉 MySQL、Redis，了解 Docker；",
+          "weight": "medium",
+          "evidence": "Java / Spring Boot、Python、MySQL、Redis、Linux、Docker",
+          "itemId": "skill_list-38802760",
+          "type": "weak",
+          "status": "表述偏弱",
+          "action": "在项目经历中补充该技能的真实使用场景"
+        },
+        {
+          "requirement": "掌握 Python",
+          "weight": "high",
+          "evidence": "Java / Spring Boot、Python、MySQL、Redis、Linux、Docker",
+          "itemId": "skill_list-38802760",
+          "type": "weak",
+          "status": "表述偏弱",
+          "action": "在项目经历中补充该技能的真实使用场景"
+        },
+        {
+          "requirement": "掌握 Java",
+          "weight": "high",
+          "evidence": "Java / Spring Boot、Python、MySQL、Redis、Linux、Docker",
+          "itemId": "skill_list-38802760",
+          "type": "weak",
+          "status": "表述偏弱",
+          "action": "在项目经历中补充该技能的真实使用场景"
+        },
+        {
+          "requirement": "掌握 SQL",
+          "weight": "high",
+          "evidence": "Java / Spring Boot、Python、MySQL、Redis、Linux、Docker",
+          "itemId": "skill_list-38802760",
+          "type": "weak",
+          "status": "表述偏弱",
+          "action": "在项目经历中补充该技能的真实使用场景"
+        },
+        {
+          "requirement": "掌握 大模型",
+          "weight": "high",
+          "evidence": "",
+          "itemId": "",
+          "type": "none",
+          "status": "尚未体现",
+          "action": "若确有相关经历请补充，否则不要硬写"
+        },
+        {
+          "requirement": "掌握 RAG",
+          "weight": "medium",
+          "evidence": "Java / Spring Boot、Python、MySQL、Redis、Linux、Docker",
+          "itemId": "skill_list-38802760",
+          "type": "weak",
+          "status": "表述偏弱",
+          "action": "在项目经历中补充该技能的真实使用场景"
+        },
+        {
+          "requirement": "掌握 Agent",
+          "weight": "medium",
+          "evidence": "",
+          "itemId": "",
+          "type": "none",
+          "status": "尚未体现",
+          "action": "若确有相关经历请补充，否则不要硬写"
+        }
+      ],
+      "strengths": [
+        "简历中有「Python」的相关经历",
+        "简历中有「Java」的相关经历",
+        "简历中有「SQL」的相关经历"
+      ],
+      "gaps": [
+        "JD 要求「大模型」，简历中未体现",
+        "JD 要求「Agent」，简历中未体现",
+        "JD 要求「LlamaIndex」，简历中未体现"
+      ],
+      "doNotForce": [
+        "「LoRA」没有任何相关经历，不宜牵强写入",
+        "「微调」没有任何相关经历，不宜牵强写入"
+      ],
+      "keywordsCovered": [
+        "Python",
+        "Java",
+        "SQL",
+        "RAG",
+        "LangChain",
+        "检索",
+        "MySQL"
+      ],
+      "keywordsMissing": [
+        "大模型",
+        "Agent",
+        "LlamaIndex",
+        "LoRA",
+        "微调",
+        "Prompt",
+        "评测",
+        "向量数据库",
+        "重排"
+      ],
+      "eliminationRisk": "（演示）一半以上关键词未覆盖，初筛有风险",
+      "strategy": "（演示）把与 Python 最相关的经历前置，压缩无关经历的篇幅。",
+      "questions": [
+        "你是否接触过「大模型」？在哪个项目里、做到什么程度？",
+        "你是否接触过「Agent」？在哪个项目里、做到什么程度？",
+        "你是否接触过「LlamaIndex」？在哪个项目里、做到什么程度？"
+      ]
+    },
+    "tailoredSlug": "张明-字节跳动-大模型应用开发实习",
+    "tailor": {
+      "items": [
+        {
+          "id": "skill_list-38802760",
+          "html": "<p>Java / Spring Boot、<strong>Python</strong>、MySQL、Redis、Linux、Docker、Vue、JavaScript、LangChain、RAG ｜ 英语：CET-4</p>",
+          "reason": "（演示）突出 JD 关键词：Python、Java、SQL",
+          "jdRequirement": "Python、Java、SQL",
+          "todos": []
+        },
+        {
+          "id": "works-26952309",
+          "html": "<p>面向集团及子公司自建的结算信息化平台，覆盖充值/提现/转账/退款/调账五大资金链路，解决跨主体资金归集、分段计息与账实一致问题。</p>\n<ul>\n<li><strong>业务建模</strong>：独立设计 18 张核心业务表与三大结算核对报表体系（分段核对、加权本金、手续费分配），构建双向资金池管理机制。</li>\n<li><strong>事件溯源计息</strong>：将业务抽象为五类事件逐笔生成快照，实现拆借与活期双轨分段计息，全链路 BigDecimal 保留 6 位小数精度。</li>\n<li><strong>审批落账与冲正</strong>：设计两阶段审批落账与作废重录机制，错误流水留痕作废并触发全量重建，结息期 LOCKED 状态硬拦截已结息数据修改，【待补充：该项工作的规模或效果数据】。</li>\n<li><strong>并发控制</strong>：基于 ReentrantLock 与 <strong>MySQL</strong> 命名锁实现落账串行化，锁释放严格绑定事务提交后；12 线程并发实测峰值并发恒为 1，杜绝中间脏读与资金失衡。</li>\n</ul>",
+          "reason": "（演示）突出 JD 关键词：SQL、MySQL",
+          "jdRequirement": "SQL、MySQL",
+          "todos": [
+            "该项工作的规模或效果数据"
+          ]
+        },
+        {
+          "id": "project_experience-38349442",
+          "html": "<ul>\n<li><strong>内网本地部署</strong>：以 Sidecar 隔离硬件与端侧模型，读卡器、人脸比对、语音交互等能力全部内网本地运行，保障业务数据安全，【待补充：该项工作的规模或效果数据】。</li>\n<li><strong>AI 智能体问答</strong>：基于 <strong>LangChain</strong> 实现访客问答与办理，权限、配额与事务由后端硬拦截、模型仅做意图提取；按 visitor_id 硬隔离本人记录，实现“语义-关键词-元数据”三级降级<strong>检索</strong>，【待补充：该项工作的规模或效果数据】。</li>\n<li><strong>全栈交付</strong>：负责后端、管理端、自助机与本机 Sidecar 全栈交付，产出 21 张业务表、78 个 REST 接口、180 项自动化测试，以 Alembic 与 Docker Compose 规范版本管理与部署。</li>\n<li><strong>数据安全</strong>：实现 RBAC 与 JWT 双 Token 轮换，身份证号按“密文、加盐哈希、脱敏”三列分存，支持免解密哈希精准检索，配合软删除与写操作审计。</li>\n</ul>",
+          "reason": "（演示）突出 JD 关键词：LangChain、检索",
+          "jdRequirement": "LangChain、检索",
+          "todos": [
+            "该项工作的规模或效果数据",
+            "该项工作的规模或效果数据"
+          ]
+        }
+      ],
+      "moduleOrder": [
+        "personal_summary",
+        "edus",
+        "skill_list",
+        "works",
+        "project_experience",
+        "orgs",
+        "reasearch_experience",
+        "honor"
+      ],
+      "itemOrder": {},
+      "gaps": [
+        "大模型",
+        "Agent",
+        "LlamaIndex",
+        "LoRA"
+      ],
+      "bossGreeting": "（演示）您好，我是张明，看到贵司大模型应用开发实习的招聘。我有Python、Java方向的项目经历，期待进一步沟通，谢谢！",
+      "summary": "（演示模式）按关键词命中数前置了相关经历并加粗关键词；配置 API Key 后由大模型真实定制。",
+      "changes": [
+        {
+          "kind": "item",
+          "id": "skill_list-38802760",
+          "label": "专业技能",
+          "before": "<p>Java / Spring Boot、Python、MySQL、Redis、Linux、Docker、Vue、JavaScript、LangChain、RAG ｜ 英语：CET-4</p>",
+          "after": "<p>Java / Spring Boot、<strong>Python</strong>、MySQL、Redis、Linux、Docker、Vue、JavaScript、LangChain、RAG ｜ 英语：CET-4</p>",
+          "reason": "（演示）突出 JD 关键词：Python、Java、SQL",
+          "jdRequirement": "Python、Java、SQL",
+          "todos": []
+        },
+        {
+          "kind": "item",
+          "id": "works-26952309",
+          "label": "实习经历 · 杭州云启数据科技有限公司",
+          "before": "<p>面向集团及子公司自建的结算信息化平台，覆盖充值/提现/转账/退款/调账五大资金链路，解决跨主体资金归集、分段计息与账实一致问题。</p>\n<ul>\n<li><strong>业务建模</strong>：独立设计 18 张核心业务表与三大结算核对报表体系（分段核对、加权本金、手续费分配），构建双向资金池管理机制。</li>\n<li><strong>事件溯源计息</strong>：将业务抽象为五类事件逐笔生成快照，实现拆借与活期双轨分段计息，全链路 BigDecimal 保留 6 位小数精度。</li>\n<li><strong>审批落账与冲正</strong>：设计两阶段审批落账与作废重录机制，错误流水留痕作废并触发全量重建，结息期 LOCKED 状态硬拦截已结息数据修改。</li>\n<li><strong>并发控制</strong>：基于 ReentrantLock 与 MySQL 命名锁实现落账串行化，锁释放严格绑定事务提交后；12 线程并发实测峰值并发恒为 1，杜绝中间脏读与资金失衡。</li>\n</ul>",
+          "after": "<p>面向集团及子公司自建的结算信息化平台，覆盖充值/提现/转账/退款/调账五大资金链路，解决跨主体资金归集、分段计息与账实一致问题。</p>\n<ul>\n<li><strong>业务建模</strong>：独立设计 18 张核心业务表与三大结算核对报表体系（分段核对、加权本金、手续费分配），构建双向资金池管理机制。</li>\n<li><strong>事件溯源计息</strong>：将业务抽象为五类事件逐笔生成快照，实现拆借与活期双轨分段计息，全链路 BigDecimal 保留 6 位小数精度。</li>\n<li><strong>审批落账与冲正</strong>：设计两阶段审批落账与作废重录机制，错误流水留痕作废并触发全量重建，结息期 LOCKED 状态硬拦截已结息数据修改，【待补充：该项工作的规模或效果数据】。</li>\n<li><strong>并发控制</strong>：基于 ReentrantLock 与 <strong>MySQL</strong> 命名锁实现落账串行化，锁释放严格绑定事务提交后；12 线程并发实测峰值并发恒为 1，杜绝中间脏读与资金失衡。</li>\n</ul>",
+          "reason": "（演示）突出 JD 关键词：SQL、MySQL",
+          "jdRequirement": "SQL、MySQL",
+          "todos": [
+            "该项工作的规模或效果数据"
+          ]
+        },
+        {
+          "kind": "item",
+          "id": "project_experience-38349442",
+          "label": "项目经历 · 园区访客智慧自助登记系统",
+          "before": "<ul>\n<li><strong>内网本地部署</strong>：以 Sidecar 隔离硬件与端侧模型，读卡器、人脸比对、语音交互等能力全部内网本地运行，保障业务数据安全。</li>\n<li><strong>AI 智能体问答</strong>：基于 LangChain 实现访客问答与办理，权限、配额与事务由后端硬拦截、模型仅做意图提取；按 visitor_id 硬隔离本人记录，实现“语义-关键词-元数据”三级降级检索。</li>\n<li><strong>全栈交付</strong>：主导后端、管理端、自助机与本机 Sidecar 全栈交付，产出 21 张业务表、78 个 REST 接口、180 项自动化测试，以 Alembic 与 Docker Compose 规范版本管理与部署。</li>\n<li><strong>数据安全</strong>：实现 RBAC 与 JWT 双 Token 轮换，身份证号按“密文、加盐哈希、脱敏”三列分存，支持免解密哈希精准检索，配合软删除与写操作审计。</li>\n</ul>",
+          "after": "<ul>\n<li><strong>内网本地部署</strong>：以 Sidecar 隔离硬件与端侧模型，读卡器、人脸比对、语音交互等能力全部内网本地运行，保障业务数据安全，【待补充：该项工作的规模或效果数据】。</li>\n<li><strong>AI 智能体问答</strong>：基于 <strong>LangChain</strong> 实现访客问答与办理，权限、配额与事务由后端硬拦截、模型仅做意图提取；按 visitor_id 硬隔离本人记录，实现“语义-关键词-元数据”三级降级<strong>检索</strong>，【待补充：该项工作的规模或效果数据】。</li>\n<li><strong>全栈交付</strong>：负责后端、管理端、自助机与本机 Sidecar 全栈交付，产出 21 张业务表、78 个 REST 接口、180 项自动化测试，以 Alembic 与 Docker Compose 规范版本管理与部署。</li>\n<li><strong>数据安全</strong>：实现 RBAC 与 JWT 双 Token 轮换，身份证号按“密文、加盐哈希、脱敏”三列分存，支持免解密哈希精准检索，配合软删除与写操作审计。</li>\n</ul>",
+          "reason": "（演示）突出 JD 关键词：LangChain、检索",
+          "jdRequirement": "LangChain、检索",
+          "todos": [
+            "该项工作的规模或效果数据",
+            "该项工作的规模或效果数据"
+          ]
+        }
+      ],
+      "at": "2026-11-09T16:51:11.170Z",
+      "mock": true
+    },
+    "interview": {
+      "questions": [
+        {
+          "round": "口径与边界",
+          "question": "在「杭州云启数据科技有限公司」里，哪些是你本人独立完成的？团队分工是怎样的？",
+          "target": "面向集团及子公司自建的结算信息化平台，覆盖充值/提现/转账/退款/调账五大资金链",
+          "itemId": "works-26952309",
+          "why": "确认个人贡献边界",
+          "mustCover": [
+            "团队规模",
+            "本人负责模块",
+            "关键决策是否由你做出"
+          ],
+          "risk": "medium"
+        },
+        {
+          "round": "方案与权衡",
+          "question": "你写到「• 业务建模：独立设计 18 张核心业务表与三大结算核对报表体系（分段核对、加权」，这个数字是怎么得到的？基线和统计口径是什么？",
+          "target": "• 业务建模：独立设计 18 张核心业务表与三大结算核对报表体系（分段核对、加权",
+          "itemId": "works-26952309",
+          "why": "数字必被追问口径",
+          "mustCover": [
+            "测量方法",
+            "对照基线",
+            "统计周期"
+          ],
+          "risk": "high"
+        },
+        {
+          "round": "口径与边界",
+          "question": "在「园区访客智慧自助登记系统」里，哪些是你本人独立完成的？团队分工是怎样的？",
+          "target": "• 内网本地部署：以 Sidecar 隔离硬件与端侧模型，读卡器、人脸比对、语音",
+          "itemId": "project_experience-38349442",
+          "why": "确认个人贡献边界",
+          "mustCover": [
+            "团队规模",
+            "本人负责模块",
+            "关键决策是否由你做出"
+          ],
+          "risk": "medium"
+        },
+        {
+          "round": "方案与权衡",
+          "question": "你写到「• 全栈交付：负责后端、管理端、自助机与本机 Sidecar 全栈交付，产出 2」，这个数字是怎么得到的？基线和统计口径是什么？",
+          "target": "• 全栈交付：负责后端、管理端、自助机与本机 Sidecar 全栈交付，产出 2",
+          "itemId": "project_experience-38349442",
+          "why": "数字必被追问口径",
+          "mustCover": [
+            "测量方法",
+            "对照基线",
+            "统计周期"
+          ],
+          "risk": "high"
+        },
+        {
+          "round": "口径与边界",
+          "question": "在「基于Unity3D的园区配送机器人虚拟仿真设计与」里，哪些是你本人独立完成的？团队分工是怎样的？",
+          "target": "• - 开发零代码 IF-THEN 可视化规则编辑器，学生无需编程即可配置机器人",
+          "itemId": "project_experience-35559408",
+          "why": "确认个人贡献边界",
+          "mustCover": [
+            "团队规模",
+            "本人负责模块",
+            "关键决策是否由你做出"
+          ],
+          "risk": "medium"
+        },
+        {
+          "round": "方案与权衡",
+          "question": "你写到「平台作为《智能机器人导论》教材配套系统在全国数所高校投用，零编程门槛服务 400」，这个数字是怎么得到的？基线和统计口径是什么？",
+          "target": "平台作为《智能机器人导论》教材配套系统在全国数所高校投用，零编程门槛服务 400",
+          "itemId": "project_experience-35559408",
+          "why": "数字必被追问口径",
+          "mustCover": [
+            "测量方法",
+            "对照基线",
+            "统计周期"
+          ],
+          "risk": "high"
+        },
+        {
+          "round": "口径与边界",
+          "question": "在「《Python 数据分析实战》《Python 数」里，哪些是你本人独立完成的？团队分工是怎样的？",
+          "target": "• 入选省级规划教材建设项目重点成果。\n• 主导实践教学框架设计，独立撰写核心实",
+          "itemId": "project_experience-35559409",
+          "why": "确认个人贡献边界",
+          "mustCover": [
+            "团队规模",
+            "本人负责模块",
+            "关键决策是否由你做出"
+          ],
+          "risk": "medium"
+        },
+        {
+          "round": "口径与边界",
+          "question": "在「智能英文跟读与图片点读系统」里，哪些是你本人独立完成的？团队分工是怎样的？",
+          "target": "• 基于 Vue 3 + Express 构建自定义英文跟读系统，集成 Padd",
+          "itemId": "project_experience-36039503",
+          "why": "确认个人贡献边界",
+          "mustCover": [
+            "团队规模",
+            "本人负责模块",
+            "关键决策是否由你做出"
+          ],
+          "risk": "medium"
+        },
+        {
+          "round": "方案与权衡",
+          "question": "你写到「• 基于 Vue 3 + Express 构建自定义英文跟读系统，集成 Padd」，这个数字是怎么得到的？基线和统计口径是什么？",
+          "target": "• 基于 Vue 3 + Express 构建自定义英文跟读系统，集成 Padd",
+          "itemId": "project_experience-36039503",
+          "why": "数字必被追问口径",
+          "mustCover": [
+            "测量方法",
+            "对照基线",
+            "统计周期"
+          ],
+          "risk": "high"
+        },
+        {
+          "round": "临场情境",
+          "question": "如果线上出现数据不一致/接口超时，你会如何定位？",
+          "target": "",
+          "itemId": "",
+          "why": "考察排障思路",
+          "mustCover": [
+            "监控与日志",
+            "定位步骤",
+            "复盘"
+          ],
+          "risk": "low"
+        }
+      ],
+      "selfIntro": "（演示）面试官您好，我是张明……（配置 API Key 后生成基于你简历事实的 1 分钟自我介绍）",
+      "prepare": [
+        "（演示）准备每个数字的口径与来源",
+        "准备一个项目的架构图",
+        "梳理一次遇到问题并解决的经历"
+      ]
+    },
+    "appId": "6ddc90ed59b8"
+  }
+]

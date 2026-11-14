@@ -1,0 +1,20 @@
+{
+  "name": "resume-platform",
+  "version": "4.7.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "本地简历工作台：多份简历管理、头像校徽、AI 诊断与改写、JD 适配、投递管理、模拟面试、素材库、版本对比与英文简历",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node cli.mjs serve",
+    "serve": "node cli.mjs serve",
+    "dev": "node --watch cli.mjs serve --no-open",
+    "list": "node cli.mjs list",
+    "edit": "node cli.mjs edit",
+    "test": "node tests/run.mjs",
+    "build:exe": "node tools/build-sea.mjs"
+  }
+}

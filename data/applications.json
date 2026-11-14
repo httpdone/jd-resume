@@ -1,0 +1,100 @@
+{
+  "statuses": [
+    {
+      "name": "待投递",
+      "color": "#94a3b8",
+      "stage": "todo"
+    },
+    {
+      "name": "已投递",
+      "color": "#3b82f6",
+      "stage": "active"
+    },
+    {
+      "name": "笔试/测评",
+      "color": "#8b5cf6",
+      "stage": "active"
+    },
+    {
+      "name": "一面",
+      "color": "#06b6d4",
+      "stage": "interview"
+    },
+    {
+      "name": "二面",
+      "color": "#14b8a6",
+      "stage": "interview"
+    },
+    {
+      "name": "三面/终面",
+      "color": "#0ea5e9",
+      "stage": "interview"
+    },
+    {
+      "name": "HR面",
+      "color": "#f59e0b",
+      "stage": "interview"
+    },
+    {
+      "name": "Offer",
+      "color": "#22c55e",
+      "stage": "offer"
+    },
+    {
+      "name": "已拒绝",
+      "color": "#ef4444",
+      "stage": "closed"
+    },
+    {
+      "name": "已放弃",
+      "color": "#64748b",
+      "stage": "closed"
+    }
+  ],
+  "items": [
+    {
+      "id": "6ddc90ed59b8",
+      "createdAt": "2026-11-09T16:51:11.168Z",
+      "updatedAt": "2026-11-09T16:51:11.168Z",
+      "history": [
+        {
+          "status": "待投递",
+          "at": "2026-11-09T16:51:11.168Z"
+        }
+      ],
+      "events": [
+        {
+          "id": "ev-demo-exam",
+          "type": "笔试",
+          "date": "2026-11-18",
+          "time": "14:00",
+          "note": "在线笔试",
+          "done": false
+        },
+        {
+          "id": "ev-demo-iv1",
+          "type": "一面",
+          "date": "2026-11-25",
+          "time": "14:00",
+          "note": "",
+          "done": false
+        },
+        {
+          "id": "ev-demo-iv2",
+          "type": "二面",
+          "date": "2026-12-02",
+          "time": "14:00",
+          "note": "",
+          "done": false
+        }
+      ],
+      "company": "字节跳动",
+      "role": "大模型应用开发实习",
+      "link": "https://jobs.bytedance.com",
+      "resumeSlug": "张明-字节跳动-大模型应用开发实习",
+      "jdId": "f992f63dda85",
+      "status": "待投递",
+      "notes": "示例投递：日历上有笔试（11/18）、一面（11/25）、二面（12/02），可改状态或再加日程。"
+    }
+  ]
+}
