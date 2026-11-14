@@ -1,4 +1,5 @@
 // v4.2 复现/验证：编辑态选中框与操作栏位置（用真实鼠标事件）
+// 示例数据：先 node tests/demo-server.mjs <端口> 启动（examples/ 复制到临时 RESUME_HOME）
 // 用法：node tests/screenshots-v42.mjs <输出目录> <端口> <前缀> [slug]
 import { launch } from './browser.mjs';
 

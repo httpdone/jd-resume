@@ -31,9 +31,25 @@
 
 ## 下载
 
-不想装 Node 的话，到仓库的 Releases 页面（或 Actions 的构建产物）下载对应平台的压缩包：`windows-x64`、`macos-arm64`、`macos-x64`、`linux-x64`。解压后双击（或在终端运行）`resume-platform`，会自动启动服务并打开浏览器；简历和数据就保存在解压目录里的 `resumes/`、`data/`。macOS 首次打开若被拦截，在「系统设置 → 隐私与安全性」里允许即可。
+不想装 Node 的话，到仓库的 Releases 页面（或 Actions 的构建产物）下载对应平台的压缩包：`windows-x64`、`macos-arm64`、`macos-x64`、`linux-x64`。解压后双击（或在终端运行）`resume-platform`，会自动启动服务并打开浏览器。更新时直接用新版本替换整个程序文件夹即可，数据不受影响（见下方「数据保存在哪」）。macOS 首次打开若被拦截，在「系统设置 → 隐私与安全性」里允许即可。
 
 自己打包：`npm run build:exe`（需要 Node 22 以上并联网），产物在 `dist/`。
+
+## 数据保存在哪
+
+程序和数据分开存放，程序文件夹里只有程序本身（含入门模板 `starter/` 和示例数据 `examples/`）。简历、历史版本、素材库、JD、投递、面试、导出文件、设置与 API Key 都在数据目录里：
+
+| 系统 | 数据目录 |
+| --- | --- |
+| Windows | `%APPDATA%\jd-resume` |
+| macOS | `~/Library/Application Support/jd-resume` |
+| Linux | `$XDG_DATA_HOME/jd-resume`，默认 `~/.local/share/jd-resume` |
+
+- 第一次启动会放一份「我的简历」入门模板，各模块都有占位文字，照着替换即可；删掉后不会再出现，新建简历时仍可选「从入门模板创建」。素材库、JD、投递、面试一开始都是空的。
+- 想先看看完整效果：设置 → 「导入示例数据」，导入虚构候选人的简历、JD、投递和面试记录（同名跳过，不覆盖已有数据）。
+- 设置 → 「删除所有用户数据」会清空数据目录（需两次确认），恢复到第一次启动的状态。
+- 环境变量 `RESUME_HOME` 可以把数据放到任意目录（比如同步盘）。
+- 旧版（4.7 及以前）把数据放在程序目录的 `resumes/`、`data/` 里；程序目录里已有简历或配置时会继续沿用那里，不用迁移。想改用系统目录，把这两个文件夹移过去即可。设置页「本地环境」会显示当前用的数据目录。
 
 ## 快速开始
 
@@ -50,7 +66,7 @@ Node 18 以上，Windows / macOS / Linux 用法相同。换端口或不自动打
 ## 模型配置
 
 - 在「设置」里选预设（DeepSeek / 通义千问 / Kimi / 智谱 / 豆包 / 硅基流动 / OpenAI / OpenRouter / Ollama / 自定义），填 Base URL 和 API Key，可一键获取模型列表并测试连接。支持任何 OpenAI 兼容的 `/chat/completions` 接口。
-- **Key 按供应商分开保存**：切换预设不会串用别家的 Key；自定义接口按 Base URL 区分。Key 存在已 gitignore 的 `data/config.json`，界面只显示打码结果，请求由本机后端代理发出。
+- **Key 按供应商分开保存**：切换预设不会串用别家的 Key；自定义接口按 Base URL 区分。Key 存在数据目录的 `data/config.json`，界面只显示打码结果，请求由本机后端代理发出。
 - **结构化输出**：诊断、改写、JD 分析和定制等任务优先用 JSON Schema 约束输出；供应商不支持时自动退到 JSON 模式，再不行才用提示词约束加自动修复，并记住每个模型可用的方式。
 - **最大输出 Token** 默认 32768（推理模型需要较大的额度）；接口提示超出上限时会自动降到 8192 重试。
 - 也可以用环境变量 `LLM_API_KEY`、`LLM_BASE_URL`、`LLM_MODEL` 配置。
@@ -87,8 +103,11 @@ lib/store.mjs            简历存储、历史版本、重命名
 public/                  前端（原生 ES Module，无构建）
 template/  assets/       经典蓝模板样式与 themes.css（不含字体文件）
 docs/                    使用说明、原创性对照报告、宣传截图
-resumes/<名称>/          body.html、meta.json、assets/、.history/
-data/                    投递、JD、素材、面试、配置（Key 勿提交）
+starter/                 入门模板「我的简历」（首次启动复制到数据目录）
+examples/                示例简历与数据（设置 →「导入示例数据」）
+数据目录/resumes/<名称>/  body.html、meta.json、assets/、.history/
+数据目录/data/            投递、JD、素材、面试、素材库、配置（含 Key）
+数据目录/out/             导出的 HTML / PDF
 tests/                   冒烟测试、假模型服务、截图脚本
 tools/build-sea.mjs      打包单文件可执行程序（.github/workflows/build.yml 调用）
 ```
@@ -115,7 +134,7 @@ STAR、ATS 关键词、不编造经历等属于行业通用做法，不算对某
 
 [MIT](LICENSE) © 2026
 
-演示数据（「张明」等）为虚构示例。
+示例数据（`examples/` 里的「张明」等）为虚构示例。
 
 ## 社区
 

@@ -1,4 +1,5 @@
 // 为 v3 模板截图并导出 PDF。先启动工作台，再执行：
+// 示例数据：先 node tests/demo-server.mjs <端口> 启动（examples/ 复制到临时 RESUME_HOME）
 //   node tests/screenshots-v3.mjs /workspace/shots/v3 4399
 import fs from 'node:fs';
 import path from 'node:path';

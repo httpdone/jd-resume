@@ -1,4 +1,5 @@
 // v4 截图与 7 套模板有图 / 删图后的预览、PDF 目视检查
+// 示例数据：先 node tests/demo-server.mjs <端口> 启动（examples/ 复制到临时 RESUME_HOME）
 // 用法：先启动工作台，再：node tests/screenshots-v4.mjs <shotsDir> <port> [slug] [pdfDir]
 import fs from 'node:fs';
 import path from 'node:path';

@@ -1,4 +1,4 @@
-import { icon, esc, el, $, $$, toast, confirmDialog } from '../ui.js';
+import { icon, esc, el, $, $$, toast, confirmDialog, modal } from '../ui.js';
 import { get, put, post, del } from '../api.js';
 import { refreshLlmStatus } from '../store.js';
 
@@ -12,7 +12,7 @@ const DEFAULT_STATUSES = [
 export async function render(view) {
   const [s, apps, health] = await Promise.all([get('/api/settings'), get('/api/apps'), get('/api/health')]);
   let statuses = apps.statuses.map((x) => ({ ...x }));
-  view.innerHTML = `<div class="page" style="max-width:980px"><div class="page-head"><div><h1>设置</h1><p>大模型接口、投递状态与本地数据。所有数据都只保存在本机项目目录里。</p></div></div>
+  view.innerHTML = `<div class="page" style="max-width:980px"><div class="page-head"><div><h1>设置</h1><p>大模型接口、投递状态与本地数据。所有数据都只保存在本机的数据目录里。</p></div></div>
   <div class="card card-pad" id="llm-card">
     <h3 style="margin:0 0 4px;display:flex;gap:8px;align-items:center">${icon('sparkles')}大模型接口 <span id="llm-state"></span></h3>
     <p class="muted small" style="margin:0 0 14px">任何 OpenAI 兼容接口都可以（/chat/completions，支持流式）。Key 保存在 <span class="mono">data/config.json</span>（已加入 .gitignore），也可用环境变量 <span class="mono">LLM_API_KEY</span> / <span class="mono">LLM_BASE_URL</span> / <span class="mono">LLM_MODEL</span>。</p>
@@ -53,12 +53,18 @@ export async function render(view) {
   <div class="card card-pad" style="margin-top:16px">
     <h3 style="margin:0 0 10px;display:flex;gap:8px;align-items:center">${icon('info')}本地环境</h3>
     <table class="req-table"><tbody>
-      <tr><td class="muted" style="width:140px">项目目录</td><td class="mono small">${esc(health.root)}</td></tr>
+      <tr><td class="muted" style="width:140px">数据目录</td><td class="mono small">${esc(health.home || health.root)}${health.mode === 'portable' ? '<span class="muted">（沿用程序目录旁的旧数据）</span>' : health.mode === 'env' ? '<span class="muted">（RESUME_HOME）</span>' : ''}</td></tr>
+      <tr><td class="muted">程序目录</td><td class="mono small">${esc(health.programDir || '')}</td></tr>
       <tr><td class="muted">PDF 浏览器</td><td class="mono small">${health.browser ? esc(health.browser) : '<span style="color:var(--bad)">未找到 Chrome / Edge，设置环境变量 CHROME_PATH</span>'}</td></tr>
       <tr><td class="muted">Node</td><td class="mono small">${esc(health.node)}</td></tr>
       <tr><td class="muted">数据文件</td><td class="small">简历：<span class="mono">resumes/&lt;名称&gt;/body.html</span>（每次保存前自动备份到 .history/）<br>投递：<span class="mono">data/applications.json</span>　JD：<span class="mono">data/jds.json</span>　素材：<span class="mono">data/stories.json</span>　模拟面试：<span class="mono">data/interviews.json</span>　配置：<span class="mono">data/config.json</span></td></tr>
-      <tr><td class="muted">命令行</td><td class="small mono">npm start　·　node cli.mjs list　·　node cli.mjs pdf 张明 --open</td></tr>
+      <tr><td class="muted">命令行</td><td class="small mono">npm start　·　node cli.mjs list　·　node cli.mjs pdf 我的简历 --open</td></tr>
     </tbody></table>
+  </div>
+  <div class="card card-pad" style="margin-top:16px">
+    <h3 style="margin:0 0 4px;display:flex;gap:8px;align-items:center">${icon('layers')}数据管理</h3>
+    <p class="muted small" style="margin:0 0 14px">示例数据是一位虚构候选人的两份简历和配套的 JD、经历素材、投递与面试记录，用来体验完整流程；导入时同名简历跳过，已有数据不会被覆盖。</p>
+    <div class="row" style="gap:8px"><button class="btn sm" id="import-examples" ${health.hasExamples === false ? 'disabled' : ''}>${icon('download')}导入示例数据</button><span class="grow"></span><button class="btn sm danger" id="wipe-data">${icon('trash')}删除所有用户数据</button></div>
   </div></div>`;
 
   const f = (n) => view.querySelector('[name=' + n + ']');
@@ -217,6 +223,31 @@ export async function render(view) {
       await put('/api/settings', { remindAfterDays: days, notifyEnabled });
       toast('提醒设置已保存');
     } catch (err) { toast(err.message, 'err'); }
+  };
+  $('#import-examples').onclick = async () => {
+    if (!(await confirmDialog('把示例简历和配套数据导入到当前数据目录？\n同名简历会跳过，已有的 JD、素材、投递、面试记录不会被覆盖。', { title: '导入示例数据', ok: '导入' }))) return;
+    try {
+      const r = await post('/api/userdata/import-examples');
+      const c = r.counts || {};
+      toast('已导入 ' + r.resumes.added.length + ' 份简历' + (r.resumes.skipped.length ? '（跳过同名 ' + r.resumes.skipped.length + ' 份）' : '') + '，JD ' + (c.jds || 0) + ' 条，素材 ' + (c.stories || 0) + ' 条，投递 ' + (c.applications || 0) + ' 条', 'ok', 4000);
+    } catch (err) { toast(err.message, 'err'); }
+  };
+  $('#wipe-data').onclick = async () => {
+    const home = health.home || health.root;
+    if (!(await confirmDialog('将永久删除数据目录里的全部内容，无法恢复：\n· 所有简历及历史版本\n· 头像 / 校徽素材库\n· JD 库、经历素材、投递记录、模拟面试\n· 导出的 PDF / HTML 文件\n· 设置与所有 API Key\n\n数据目录：' + home + '\n程序本身不受影响，删除后会恢复到第一次启动的状态（只保留一份入门简历）。', { title: '删除所有用户数据', ok: '继续', danger: true }))) return;
+    const body = el('<div><p style="margin:0 0 10px">这是最后一步。请在下面输入 <b>删除</b> 两个字确认。</p><input class="input" name="typed" autocomplete="off" placeholder="删除"></div>');
+    const m = modal({ title: '再次确认', body, width: 440, actions: [
+      { label: '取消' },
+      { label: '永久删除所有数据', cls: 'danger', onClick: async () => {
+        if (body.querySelector('[name=typed]').value.trim() !== '删除') { toast('请输入「删除」确认', 'warn'); return false; }
+        await post('/api/userdata/wipe', { confirm: 'DELETE_ALL_USER_DATA' });
+        toast('所有用户数据已删除');
+        setTimeout(() => { location.hash = '#/'; location.reload(); }, 600);
+      } },
+    ] });
+    const okBtn = m.el.querySelector('.modal-foot .danger');
+    okBtn.disabled = true;
+    body.querySelector('[name=typed]').addEventListener('input', (e) => { okBtn.disabled = e.target.value.trim() !== '删除'; });
   };
   $('#st-add').onclick = () => { statuses.push({ name: '新状态', color: '#6366f1', stage: 'active' }); drawSt(); };
   $('#st-reset').onclick = () => { statuses = DEFAULT_STATUSES.map((x) => ({ ...x })); drawSt(); };

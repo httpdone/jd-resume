@@ -1,5 +1,6 @@
 // 打包单文件可执行程序（Node 官方 Single Executable Applications）。
-// 产物：dist/resume-platform-<平台>/ 目录，里面是可执行文件 + 运行需要的 template/ public/ assets/ 以及示例 resumes/ data/。
+// 产物：dist/resume-platform-<平台>/ 目录，里面是可执行文件 + 运行需要的 template/ public/ assets/ starter/（入门模板）examples/（示例数据）。
+// 不带用户数据：用户数据默认在系统用户目录，更新时整个程序目录直接替换即可。
 // 用法：node tools/build-sea.mjs [平台名，默认 <os>-<arch>]
 // 需要联网（通过 npx 临时下载 esbuild 和 postject），需要 Node 22 以上。
 import fs from 'node:fs';
@@ -44,9 +45,9 @@ if (platform === 'darwin') postjectArgs.push('--macho-segment-name', 'NODE_SEA')
 run(npx, postjectArgs);
 if (platform === 'darwin') run('codesign', ['--sign', '-', exe]);
 
-// 4. 运行时需要的目录与示例数据（不带 data/config.json、历史版本、导出文件）
+// 4. 运行时需要的目录（不带 resumes/ data/ 用户数据、历史版本、导出文件）
 const skip = (p) => /(^|[\\/])\.history([\\/]|$)/.test(p) || /[\\/]data[\\/]config\.json$/.test(p) || /\.(tmp|part)$/.test(p);
-for (const dir of ['template', 'public', 'assets', 'resumes', 'data']) {
+for (const dir of ['template', 'public', 'assets', 'starter', 'examples']) {
   const src = path.join(root, dir);
   if (fs.existsSync(src)) fs.cpSync(src, path.join(outDir, dir), { recursive: true, filter: (p) => !skip(p) });
 }

@@ -1,4 +1,5 @@
 // v4.1 截图：结构树、悬停工具栏、诊断引用 chip、校徽占位；结构操作后 7 套模板预览 + PDF
+// 示例数据：先 node tests/demo-server.mjs <端口> 启动（examples/ 复制到临时 RESUME_HOME）
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';

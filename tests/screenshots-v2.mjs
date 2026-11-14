@@ -1,4 +1,4 @@
-// 为 v2 新功能截图：先启动工作台（建议 LLM_MOCK=1），再执行
+// 为 v2 新功能截图：先用示例数据启动工作台（LLM_MOCK=1 node tests/demo-server.mjs 4321），再执行
 //   node tests/screenshots-v2.mjs /workspace/shots/v2 4321
 import { launch } from './browser.mjs';
 

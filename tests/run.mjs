@@ -6,18 +6,21 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import http from 'node:http';
 import { fileURLToPath } from 'node:url';
-import { runV41Unit } from './v41-unit.mjs';
-import { runV41Browser } from './v41-browser.mjs';
-import { runV42Unit } from './v42-unit.mjs';
-import { runV43Unit } from './v43-unit.mjs';
-import { runV43Browser } from './v43-browser.mjs';
-import { runV42Browser } from './v42-browser.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'resume-test-'));
-fs.cpSync(path.join(ROOT, 'resumes'), path.join(HOME, 'resumes'), { recursive: true, filter: (p) => !p.includes('.history') });
+// 示例数据在 examples/，复制到临时 RESUME_HOME 里测试
+fs.cpSync(path.join(ROOT, 'examples/resumes'), path.join(HOME, 'resumes'), { recursive: true, filter: (p) => !p.includes('.history') });
 fs.mkdirSync(path.join(HOME, 'data'), { recursive: true });
-fs.copyFileSync(path.join(ROOT, 'data/applications.json'), path.join(HOME, 'data/applications.json'));
+fs.copyFileSync(path.join(ROOT, 'examples/data/applications.json'), path.join(HOME, 'data/applications.json'));
+// lib/config.mjs 在导入时解析数据目录，所以先设好 RESUME_HOME 再动态导入
+process.env.RESUME_HOME = HOME;
+const { runV41Unit } = await import('./v41-unit.mjs');
+const { runV41Browser } = await import('./v41-browser.mjs');
+const { runV42Unit } = await import('./v42-unit.mjs');
+const { runV43Unit } = await import('./v43-unit.mjs');
+const { runV43Browser } = await import('./v43-browser.mjs');
+const { runV42Browser } = await import('./v42-browser.mjs');
 const slug = fs.readdirSync(path.join(HOME, 'resumes')).find((d) => !d.startsWith('.'));
 const PORT = 4500 + Math.floor(Math.random() * 400);
 const LLM_PORT = PORT + 1;

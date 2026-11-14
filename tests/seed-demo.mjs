@@ -1,7 +1,8 @@
 // 往正在运行的工作台里写入 1 条演示用的投递记录，并附 3 条示例日程（笔试 / 一面 / 二面）。
 // 已有「字节跳动 · 大模型应用开发实习」时不会重复添加，也不会删掉你自己建的其他投递。
 // 若该示例已在、但还没有日程，只会补上这 3 条（已有日程则不动）。
-// 用法：先 npm start，再另开一个终端：node tests/seed-demo.mjs [端口，默认 4321]
+// 用法：先 npm start（或 node tests/demo-server.mjs），再另开一个终端：node tests/seed-demo.mjs [端口，默认 4321]
+// 示例简历「张明-…」需先在 设置 → 导入示例数据 导入。
 const port = process.argv[2] || 4321;
 const B = 'http://127.0.0.1:' + port;
 const DEMO_EVENTS = [

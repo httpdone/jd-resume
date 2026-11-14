@@ -1,5 +1,5 @@
 // 生成 README / 汇报用截图：node tests/screenshots.mjs [输出目录] [端口]
-// 需要工作台已在运行（建议先打开演示模式并执行 tests/seed-demo.mjs）
+// 需要工作台已在运行：先 node tests/demo-server.mjs 用示例数据启动（建议打开演示模式）
 import { launch } from './browser.mjs';
 
 const OUT = process.argv[2] || 'shots';

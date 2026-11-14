@@ -1,7 +1,9 @@
 node_modules/
-out/
-data/config.json
-data/*.tmp
-resumes/*/.history/
-*.part
 dist/
+*.part
+*.tmp
+.history/
+# 用户数据：默认在系统用户目录；旧版放在仓库根目录的也不要提交
+/resumes/
+/data/
+/out/

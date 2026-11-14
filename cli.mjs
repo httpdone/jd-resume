@@ -5,6 +5,7 @@ import readline from 'node:readline/promises';
 import { spawn } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { ASSETS_DIR, OUT_DIR, IS_SEA } from './lib/config.mjs';
+import { initUserData } from './lib/userdata.mjs';
 import { renderHtml } from './lib/render.mjs';
 import { assetsDir } from './lib/media.mjs';
 import { printPdfAuto, findBrowser } from './lib/pdf.mjs';
@@ -61,7 +62,7 @@ const HELP = [
   '',
   '  node cli.mjs serve [--port 4321] [--no-open]  启动简历工作台（网页版：简历管理 / AI 诊断改写 / JD 适配 / 投递日历）',
   '  node cli.mjs list                       列出所有简历',
-  '  node cli.mjs new <名称> [--from <名称>]  新建简历（默认从基础模板复制，可指定从某份简历复制）',
+  '  node cli.mjs new <名称> [--from <名称>]  新建简历（默认从入门模板创建，可指定从某份简历复制）',
   '  node cli.mjs edit [名称] [--port 4321]  启动本地编辑器，浏览器内直接改文字，Ctrl+S 保存',
   '  node cli.mjs pdf <名称> [--open]        导出 out/<名称>.html 与 out/<名称>.pdf',
   '  node cli.mjs html <名称>                只导出 HTML',
@@ -92,7 +93,7 @@ function cmdNew(positional, flags) {
   if (!name) throw new Error('用法：node cli.mjs new <名称> [--from <名称>]');
   const from = flags.from && flags.from !== true ? flags.from : null;
   const created = createResume(name, from);
-  console.log('已新建「' + created.slug + '」，' + created.pages + ' 页，来源：' + (from || '基础模板'));
+  console.log('已新建「' + created.slug + '」，' + created.pages + ' 页，来源：' + (from || '入门模板'));
   console.log('下一步：node cli.mjs edit ' + created.slug);
 }
 
@@ -164,6 +165,7 @@ async function main() {
     if (!run || flags.help) {
       console.log(HELP);
     } else {
+      if (command !== 'serve') initUserData(); // 首次运行命令行时也放入门模板（serve 在启动时自己做）
       await run(positional, flags);
     }
   } catch (error) {
