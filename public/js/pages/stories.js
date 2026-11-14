@@ -27,7 +27,7 @@ export async function render(view, [id]) {
 function renderList(view, data, resumes) {
   const items = data.items || [];
   view.innerHTML = `<div class="page"><div class="page-head"><div><h1>经历素材库</h1><p>把项目 / 实习的完整 STAR（背景、任务、行动、结果、数据、证据）存在这里。JD 适配和改写会把它当作证据来源，仍然不会编造。</p></div>
-    <div class="actions"><button class="btn" id="imp">${icon('download')}从简历导入</button><button class="btn" id="proj">${icon('layers')}从本机项目生成</button><a class="btn primary" href="#/stories/new">${icon('plus')}新建经历</a></div></div>
+    <div class="actions"><button class="btn" id="imp">${icon('download')}从简历导入</button><button class="btn" id="proj">${icon('layers')}从项目或描述生成</button><a class="btn primary" href="#/stories/new">${icon('plus')}新建经历</a></div></div>
     ${llmNotice(state.settings)}
     <div class="row" style="margin-bottom:14px;gap:8px;flex-wrap:wrap"><input class="input sm" id="q" placeholder="搜索标题 / 技术 / 标签" style="width:240px">${['', ...Object.keys(TYPE_NAME)].map((t) => '<button class="btn xs ' + (t ? 'ghost' : 'soft') + '" data-t="' + t + '">' + (t ? TYPE_NAME[t] : '全部') + '</button>').join('')}<label class="small muted" style="display:flex;gap:4px;align-items:center;margin-left:8px"><input type="checkbox" id="st-all">全选</label><button class="btn xs ghost danger" id="st-batch" style="display:none"></button><span class="muted small" style="margin-left:auto">${items.length} 条</span></div>
     <div class="story-grid" id="grid"></div></div>`;
@@ -112,11 +112,11 @@ function scanSummaryHtml(sm) {
 function draftToStory(d, sm) {
   const todos = (d.to_confirm || []).map((q) => '【待补充：' + String(q.ask || '').replace(/[【】]/g, '') + '】').filter((t) => t.length > 7);
   const result = [d.result || '', todos.length ? '待确认：' + todos.join('') : ''].filter(Boolean).join('\n');
-  const evidence = [{ label: '本机项目', url: '', note: sm.root }, ...(d.evidence || []).map((e) => ({ label: String(e.file || '依据').slice(0, 80), url: '', note: e.note || '' }))].slice(0, 10);
+  const evidence = [...(sm?.root ? [{ label: '本机项目', url: '', note: sm.root }] : []), ...(d.evidence || []).map((e) => ({ label: String(e.file || '依据').slice(0, 80), url: '', note: e.note || '' }))].slice(0, 10);
   return {
-    type: d.type || 'project', title: d.title || sm.name, org: d.org || '', role: d.role || '', start: d.start || '', end: d.end || '', location: '',
+    type: d.type || 'project', title: d.title || sm?.name || '未命名经历', org: d.org || '', role: d.role || '', start: d.start || '', end: d.end || '', location: '',
     background: d.background || '', task: d.task || '', action: d.action || '', result,
-    metrics: d.metrics || [], stack: d.stack || [], tags: [...new Set([...(d.tags || []), '本机项目'])], evidence,
+    metrics: d.metrics || [], stack: d.stack || [], tags: [...new Set([...(d.tags || []), ...(sm?.root ? ['本机项目'] : [])])], evidence,
   };
 }
 
@@ -134,18 +134,42 @@ function draftHtml(d, story) {
 
 function projectDialog() {
   const body = el(`<div>
-    <div class="field"><label>项目目录（绝对路径）</label><input class="input" name="path" placeholder="如 E:\\Project\\demo 或 /Users/me/code/demo"></div>
-    <div class="field"><label>我的角色 / 补充说明（可选，会当作可信事实交给 Agent）</label><textarea class="input" name="note" rows="2" placeholder="如：课程大作业，3 人小组，我负责后端接口和部署；已在实验室内部使用"></textarea></div>
-    <div class="cols"><div class="field"><label>Git 作者名（可选）</label><input class="input" name="an" placeholder="留空自动取该仓库 git config"></div><div class="field"><label>Git 作者邮箱（可选）</label><input class="input" name="ae" placeholder="用于只统计你本人的提交"></div></div>
-    <p class="muted small">只读扫描：跳过 node_modules、.git、构建产物、二进制和锁文件内容，密钥类文件（.env、*.pem、*.key 等）一律不读，发送前再做密钥脱敏。先扫描预览，确认后才会发送给模型。</p>
-    <div class="row" style="gap:8px"><button class="btn" data-scan>${icon('eye')}扫描</button><button class="btn primary" data-gen disabled>${icon('sparkles')}生成素材</button></div>
+    <div class="row" style="gap:6px;margin-bottom:12px"><button class="btn xs soft" data-tab="proj">本机项目</button><button class="btn xs ghost" data-tab="text">用一段话描述</button></div>
+    <div data-pane="proj">
+      <div class="field"><label>项目目录（绝对路径）</label><input class="input" name="path" placeholder="如 E:\\Project\\demo 或 /Users/me/code/demo"></div>
+      <div class="field"><label>我的角色 / 补充说明（可选，会当作可信事实交给 Agent）</label><textarea class="input" name="note" rows="2" placeholder="如：课程大作业，3 人小组，我负责后端接口和部署；已在实验室内部使用"></textarea></div>
+      <div class="cols"><div class="field"><label>Git 作者名（可选）</label><input class="input" name="an" placeholder="留空自动取该仓库 git config"></div><div class="field"><label>Git 作者邮箱（可选）</label><input class="input" name="ae" placeholder="用于只统计你本人的提交"></div></div>
+      <p class="muted small" data-hint-explore>Agent 会先看项目概览，再自己决定读哪些文件（只读，最多 20 步，不能访问项目目录以外）。node_modules、构建产物、二进制不看，.env、密钥、证书类文件一律拒绝读取，所有内容发送前再做密钥脱敏。</p>
+      <p class="muted small" data-hint-scan style="display:none">固定扫描：按规则挑 README、依赖清单、统计和几份源码，先预览要发送的全部内容，确认后再生成。</p>
+      <label class="small muted" style="display:flex;gap:6px;align-items:center;margin-bottom:10px"><input type="checkbox" name="fixed">只用固定扫描（先预览要发送的内容）</label>
+      <div class="row" style="gap:8px"><button class="btn" data-scan style="display:none">${icon('eye')}扫描</button><button class="btn primary" data-gen>${icon('sparkles')}生成素材</button></div>
+    </div>
+    <div data-pane="text" style="display:none">
+      <div class="field"><label>用自己的话描述这段经历</label><textarea class="input" name="text" rows="7" placeholder="做的是什么、为谁做、你负责哪部分、用了什么技术、遇到什么难点、结果如何。只写真实发生的，没有的数据不用编，Agent 会标成待补充。"></textarea></div>
+      <div class="field"><label>我的角色（可选）</label><input class="input" name="role" placeholder="如：后端开发 / 组长"></div>
+      <div class="row" style="gap:8px"><button class="btn primary" data-gen-text>${icon('sparkles')}生成素材</button></div>
+    </div>
     <div data-out></div><div data-draft></div>
   </div>`);
   let scan = null;
-  let draft = null;
   let abort;
-  const dlg = modal({ title: '从本机项目生成经历素材', body, width: 760, onClose: () => abort?.abort() });
+  const dlg = modal({ title: '生成经历素材', body, width: 760, onClose: () => abort?.abort() });
   const q = (sel) => body.querySelector(sel);
+  const fixed = () => q('[name=fixed]').checked;
+  const syncMode = () => {
+    q('[data-scan]').style.display = fixed() ? '' : 'none';
+    q('[data-hint-scan]').style.display = fixed() ? '' : 'none';
+    q('[data-hint-explore]').style.display = fixed() ? 'none' : '';
+    q('[data-gen]').disabled = fixed() && !scan;
+    if (!fixed()) q('[data-out]').innerHTML = '';
+  };
+  q('[name=fixed]').onchange = syncMode;
+  body.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => {
+    body.querySelectorAll('[data-tab]').forEach((x) => { x.classList.toggle('soft', x === b); x.classList.toggle('ghost', x !== b); });
+    body.querySelectorAll('[data-pane]').forEach((p) => { p.style.display = p.dataset.pane === b.dataset.tab ? '' : 'none'; });
+    q('[data-out]').innerHTML = ''; q('[data-draft]').innerHTML = ''; scan = null; syncMode();
+  });
+
   q('[data-scan]').onclick = async () => {
     const btn = q('[data-scan]');
     btn.classList.add('loading');
@@ -162,18 +186,30 @@ function projectDialog() {
       q('[data-out]').innerHTML = '<div class="callout warn" style="margin-top:12px">' + icon('alert') + '<div>' + esc(e.message) + '</div></div>';
     } finally { btn.classList.remove('loading'); }
   };
-  q('[data-gen]').onclick = async () => {
-    if (!scan) return;
+
+  // 统一的生成流程：payload 决定任务；steps 显示 Agent 每一步读了什么
+  const generate = async (payload, label, btn, sm0) => {
     const box = q('[data-draft]');
-    box.innerHTML = '<div style="margin-top:12px">' + thinkingBox('正在根据项目起草素材…') + '</div>';
+    box.innerHTML = '<div style="margin-top:12px"><div data-steps class="small" style="max-height:200px;overflow:auto;margin-bottom:8px"></div>' + thinkingBox(label) + '</div>';
+    const stepsEl = box.querySelector('[data-steps]');
     box.querySelector('[data-stop]')?.addEventListener('click', () => abort?.abort());
     abort?.abort(); abort = new AbortController();
-    q('[data-gen]').disabled = true;
+    btn.disabled = true;
     try {
-      const r = await runAgent({ task: 'story_from_project', scanId: scan.scanId, note: q('[name=note]').value.trim() }, { ...streamHandlers(box, { json: true }), signal: abort.signal });
-      draft = r.data || {};
-      const story = draftToStory(draft, scan.summary);
-      box.innerHTML = draftHtml(draft, story) + '<div class="row" style="gap:8px;margin-top:10px;justify-content:flex-end"><button class="btn" data-edit>' + icon('edit') + '先在编辑页修改</button><button class="btn primary" data-save>' + icon('save') + '保存到素材库</button></div>';
+      const r = await runAgent(payload, {
+        ...streamHandlers(box, { json: true }), signal: abort.signal,
+        onStep: (st) => {
+          stepsEl.insertAdjacentHTML('beforeend', '<div style="padding:2px 0' + (st.ok === false ? ';color:var(--warn)' : '') + '">' + (st.n ? '<span class="tiny" style="display:inline-block;width:26px">' + st.n + '</span>' : '<span style="display:inline-block;width:26px">·</span>') + esc(st.text) + '</div>');
+          stepsEl.scrollTop = stepsEl.scrollHeight;
+          const l = box.querySelector('.lbl'); if (l && st.kind === 'final') l.textContent = '正在写素材草稿…';
+        },
+      });
+      const d = r.data || {};
+      const sm = sm0 || r.project?.summary || null;
+      const story = draftToStory(d, sm);
+      const ex = sm?.explore;
+      const stepsHtml = stepsEl.innerHTML ? '<details class="small" style="margin-top:12px"><summary class="muted" style="cursor:pointer">Agent 阅读过程' + (ex ? '（' + ex.steps + ' 步，读了 ' + ex.filesRead.length + ' 个文件' + (ex.redactions ? '，隐藏疑似密钥 ' + ex.redactions + ' 处' : '') + '）' : '') + '</summary><div style="margin-top:6px">' + stepsEl.innerHTML + '</div></details>' : '';
+      box.innerHTML = stepsHtml + draftHtml(d, story) + '<div class="row" style="gap:8px;margin-top:10px;justify-content:flex-end"><button class="btn" data-edit>' + icon('edit') + '先在编辑页修改</button><button class="btn primary" data-save>' + icon('save') + '保存到素材库</button></div>';
       box.querySelector('[data-edit]').onclick = () => { sessionStorage.setItem(DRAFT_KEY, JSON.stringify(story)); dlg.close(); location.hash = '#/stories/new'; };
       box.querySelector('[data-save]').onclick = async () => {
         try {
@@ -185,8 +221,25 @@ function projectDialog() {
       };
     } catch (e) {
       if (abort.signal.aborted) { box.innerHTML = ''; return; }
-      box.innerHTML = '<div class="callout warn" style="margin-top:12px">' + icon('alert') + '<div>' + esc(e.message) + '</div></div>';
-    } finally { q('[data-gen]').disabled = false; }
+      box.querySelector('.thinking')?.remove(); box.querySelector('.ai-stream')?.remove();
+      box.insertAdjacentHTML('beforeend', '<div class="callout warn" style="margin-top:12px">' + icon('alert') + '<div>' + esc(e.message) + '</div></div>');
+    } finally { btn.disabled = false; }
+  };
+
+  q('[data-gen]').onclick = () => {
+    if (fixed()) {
+      if (!scan) return;
+      return generate({ task: 'story_from_project', scanId: scan.scanId, note: q('[name=note]').value.trim() }, '正在根据项目起草素材…', q('[data-gen]'), scan.summary);
+    }
+    const path = q('[name=path]').value.trim();
+    if (!path) { toast('请填写项目目录', 'warn'); return; }
+    q('[data-out]').innerHTML = '';
+    return generate({ task: 'story_from_project', mode: 'explore', path, authorName: q('[name=an]').value.trim(), authorEmail: q('[name=ae]').value.trim(), note: q('[name=note]').value.trim() }, 'Agent 正在阅读项目…', q('[data-gen]'));
+  };
+  q('[data-gen-text]').onclick = () => {
+    const text = q('[name=text]').value.trim();
+    if (text.length < 10) { toast('先写几句描述（至少 10 个字）', 'warn'); return; }
+    return generate({ task: 'story_from_text', text, role: q('[name=role]').value.trim() }, '正在整理成素材…', q('[data-gen-text]'));
   };
 }
 

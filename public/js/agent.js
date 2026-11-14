@@ -1,5 +1,5 @@
 // 调用后端 /api/agent（SSE 流式），返回解析好的结果
-export async function runAgent(payload, { onDelta, onThinking, onMeta, signal } = {}) {
+export async function runAgent(payload, { onDelta, onThinking, onMeta, onStep, signal } = {}) {
   const res = await fetch('/api/agent', {
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload), signal,
   });
@@ -23,6 +23,7 @@ export async function runAgent(payload, { onDelta, onThinking, onMeta, signal } 
     try { obj = JSON.parse(data); } catch { return; }
     if (event === 'delta') { full += obj.text; onDelta?.(obj.text, full); }
     else if (event === 'thinking') onThinking?.(obj.text);
+    else if (event === 'step') onStep?.(obj);
     else if (event === 'meta') { meta = obj; onMeta?.(obj); }
     else if (event === 'result') result = obj;
     else if (event === 'error') error = obj;
