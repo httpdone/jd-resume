@@ -23,9 +23,17 @@
 | --- | --- |
 | **首页**：近期笔试面试提醒、简历和投递概览 | ![首页](docs/screenshots/dashboard.jpg) |
 | **编辑器**：A4 原样预览、就地编辑、左侧填报卡片、本地体检与 AI 诊断 / 分模块改写，七套模板一键切换 | ![编辑器](docs/screenshots/editor-diagnose.jpg) |
-| **素材库**：按情境、任务、行动、结果整理完整经历，作为改写和定制时的事实依据 | ![素材库](docs/screenshots/stories.jpg) |
+| **素材库**：按情境、任务、行动、结果整理完整经历，作为改写和定制时的事实依据；可「从本机项目生成」，指定项目目录后自动扫描 README、依赖、代码规模和 Git 提交，起草一条素材 | ![素材库](docs/screenshots/stories.jpg) |
 | **投递日历**：笔试 / 面试日程、看板拖动改状态、导出 `.ics` | ![投递日历](docs/screenshots/apps-calendar.jpg) |
 | **模拟面试**：技术面 / 项目深挖 / HR 面多轮追问，错题可重练 | ![模拟面试](docs/screenshots/mock-interview.jpg) |
+
+### 从本机项目生成经历素材
+
+在素材库点「从本机项目生成」，填项目目录的绝对路径（可选填自己的角色说明和 Git 作者）。先「扫描」，预览会列出识别到的技术栈、代码行数、提交统计，以及具体哪些文件、多少字符会发给模型；确认后再「生成素材」。
+
+- 只读扫描，跳过 `node_modules`、`.git`、构建产物、二进制和锁文件内容；在 Git 仓库里按 `.gitignore` 过滤。
+- `.env*`、`*.pem`、`*.key`、`id_rsa*`、`credentials*`、`*secret*` 等密钥类文件一律不读；发送前再把疑似 API Key、令牌、密码赋值替换为「已隐藏」。总量不超过 6 万字符，单文件不超过 6000 字符。
+- 草稿里的数字只来自程序统计（接口数、模块数、提交次数、代码行数、时间跨度）；用户规模、性能、上线情况、个人分工等代码证明不了的内容会标【待补充】并列成问题，保存后用「Agent 引导式深挖」补齐。
 
 数据全部保存在本机，服务默认只监听 `127.0.0.1`；不需要 `npm install`，导出 PDF 使用本机 Chrome / Edge。
 
@@ -96,6 +104,7 @@ cli.mjs                  命令入口（serve / list / new / edit / pdf / html /
 lib/server.mjs           网页版后端：静态文件、REST API、SSE Agent
 lib/templates.mjs        模板目录与主题排版
 lib/media.mjs            头像 / 校徽存储与素材库
+lib/project-scan.mjs     本机项目扫描（素材库「从本机项目生成」）
 lib/models.mjs           经后端代理获取模型列表
 lib/agent/               提示词、JSON Schema、模型调用、演示模式
 lib/apps.mjs             投递记录与 JD
