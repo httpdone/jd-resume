@@ -22,8 +22,19 @@ function renderList(view, data, resumes) {
   view.innerHTML = `<div class="page"><div class="page-head"><div><h1>经历素材库</h1><p>把项目 / 实习的完整 STAR（背景、任务、行动、结果、数据、证据）存在这里。JD 适配和改写会把它当作证据来源，仍然不会编造。</p></div>
     <div class="actions"><button class="btn" id="imp">${icon('download')}从简历导入</button><a class="btn primary" href="#/stories/new">${icon('plus')}新建经历</a></div></div>
     ${llmNotice(state.settings)}
-    <div class="row" style="margin-bottom:14px;gap:8px;flex-wrap:wrap"><input class="input sm" id="q" placeholder="搜索标题 / 技术 / 标签" style="width:240px">${['', ...Object.keys(TYPE_NAME)].map((t) => '<button class="btn xs ' + (t ? 'ghost' : 'soft') + '" data-t="' + t + '">' + (t ? TYPE_NAME[t] : '全部') + '</button>').join('')}<span class="muted small" style="margin-left:auto">${items.length} 条</span></div>
+    <div class="row" style="margin-bottom:14px;gap:8px;flex-wrap:wrap"><input class="input sm" id="q" placeholder="搜索标题 / 技术 / 标签" style="width:240px">${['', ...Object.keys(TYPE_NAME)].map((t) => '<button class="btn xs ' + (t ? 'ghost' : 'soft') + '" data-t="' + t + '">' + (t ? TYPE_NAME[t] : '全部') + '</button>').join('')}<label class="small muted" style="display:flex;gap:4px;align-items:center;margin-left:8px"><input type="checkbox" id="st-all">全选</label><button class="btn xs ghost danger" id="st-batch" style="display:none"></button><span class="muted small" style="margin-left:auto">${items.length} 条</span></div>
     <div class="story-grid" id="grid"></div></div>`;
+  const selected = new Set();
+  const syncBatch = () => {
+    const btn = $('#st-batch');
+    btn.style.display = selected.size ? '' : 'none';
+    btn.innerHTML = icon('trash') + '批量删除' + (selected.size ? '（' + selected.size + '）' : '');
+    const boxes = [...view.querySelectorAll('#grid [data-check]')];
+    const on = boxes.filter((c) => c.checked).length;
+    const all = $('#st-all');
+    all.checked = boxes.length > 0 && on === boxes.length;
+    all.indeterminate = on > 0 && on < boxes.length;
+  };
   const draw = () => {
     const q = ($('#q')?.value || '').trim().toLowerCase();
     const typ = view.querySelector('[data-t].soft, [data-t].primary')?.dataset.t || view.querySelector('.btn.soft[data-t]')?.dataset.t;
@@ -34,7 +45,7 @@ function renderList(view, data, resumes) {
       return !q || bag.includes(q);
     });
     $('#grid').innerHTML = list.map((s) => `<div class="card story-card" data-id="${s.id}">
-      <div class="row"><span class="badge info">${esc(TYPE_NAME[s.type] || s.type)}</span><span class="muted small" style="margin-left:auto">${esc([s.start, s.end].filter(Boolean).join(' – '))}</span></div>
+      <div class="row"><label class="story-check" onclick="event.stopPropagation()"><input type="checkbox" data-check></label><span class="badge info">${esc(TYPE_NAME[s.type] || s.type)}</span><span class="muted small" style="margin-left:auto">${esc([s.start, s.end].filter(Boolean).join(' – '))}</span></div>
       <h4>${esc(s.title || '未命名')}</h4>
       <div class="small muted">${esc([s.org, s.role].filter(Boolean).join(' · '))}</div>
       <div class="star">${s.background ? '<div><b>背景</b>' + esc(s.background).slice(0, 80) + '</div>' : ''}${s.result ? '<div><b>结果</b>' + esc(s.result).slice(0, 80) + '</div>' : ''}</div>
@@ -42,9 +53,28 @@ function renderList(view, data, resumes) {
       <div class="tiny">${s.sourceSlug ? '来自简历「' + esc(s.sourceSlug) + '」' : ''} · ${fmtTime(s.updatedAt || s.createdAt)}</div>
     </div>`).join('') || '<div class="empty" style="grid-column:1/-1">' + icon('book') + '<h4>还没有素材</h4><p class="small">从已有简历导入，或新建一条，再用 Agent 追问把事实补全。</p></div>';
     $$('#grid [data-id]').forEach((c) => c.onclick = () => location.hash = '#/stories/' + c.dataset.id);
+    $$('#grid [data-check]').forEach((c) => { c.checked = selected.has(c.closest('[data-id]').dataset.id); });
+    syncBatch();
   };
   $$('[data-t]').forEach((b) => b.onclick = () => { $$('[data-t]').forEach((x) => { x.classList.remove('soft'); x.classList.add('ghost'); }); b.classList.remove('ghost'); b.classList.add('soft'); draw(); });
   $('#q').oninput = draw;
+  $('#grid').onchange = (e) => {
+    const c = e.target.closest('[data-check]');
+    if (!c) return;
+    const id = c.closest('[data-id]').dataset.id;
+    if (c.checked) selected.add(id); else selected.delete(id);
+    syncBatch();
+  };
+  $('#st-all').onchange = (e) => {
+    const on = e.target.checked;
+    for (const c of view.querySelectorAll('#grid [data-check]')) {
+      c.checked = on;
+      const id = c.closest('[data-id]').dataset.id;
+      if (on) selected.add(id); else selected.delete(id);
+    }
+    syncBatch();
+  };
+  $('#st-batch').onclick = () => deleteStoriesFlow([...selected], () => render(view, []));
   draw();
   $('#imp').onclick = () => importDialog(resumes, () => render(view, []));
 }
@@ -63,6 +93,24 @@ function importDialog(resumes, onDone) {
       } },
     ],
   });
+}
+
+async function deleteStoriesFlow(ids, onDone) {
+  ids = [...new Set(ids.filter(Boolean))];
+  if (!ids.length) return;
+  if (!(await confirmDialog('删除选中的 ' + ids.length + ' 条素材？不会改已经写进简历的内容，删除后可在几秒内撤销。', { ok: '删除', danger: true }))) return;
+  try {
+    const r = await post('/api/stories/_batch', { ids });
+    const snapshots = r.deleted || [];
+    toast('已删除 ' + snapshots.length + ' 条素材', 'ok', 8000, {
+      label: '撤销',
+      onClick: async () => {
+        try { await post('/api/stories/_restore', { snapshots }); toast('已撤销删除'); onDone?.(); }
+        catch (err) { toast(err.message, 'err'); }
+      },
+    });
+    onDone?.();
+  } catch (err) { toast(err.message, 'err'); }
 }
 
 function field(name, label, value, tag = 'input', extra = '') {
