@@ -39,10 +39,39 @@ function fieldInput(it, field, label, value, { span = false, ph = '' } = {}) {
     + '<input class="input sm" data-field="' + field + '" data-item="' + esc(it.id) + '" value="' + esc(value || '') + '" placeholder="' + esc(ph) + '"></div>';
 }
 
+// 页眉头像 / 校徽的显示开关：只切换 rp-no-* 类，图片文件和 assets 不动
+function setHeaderMediaVisible(rd, kind, visible) {
+  if (!rd?.doc) return;
+  const cls = kind === 'avatar' ? 'rp-no-avatar' : 'rp-no-school';
+  rd.doc.querySelectorAll('.user').forEach((u) => u.classList.toggle(cls, !visible));
+  try { rd.syncFrom(rd.primary()); } catch { /* 忽略 */ }
+  try { rd.paginate(); } catch { /* 忽略 */ }
+}
+
+// 卡片标题只做一行预览：折行压成空格、去掉列表符号，超长截断，完整内容看悬浮提示和卡片里的输入框
+const CARD_TITLE_MAX = 14;
+function cardTitle(it, fields, mod, kind) {
+  const raw = kind === 'body'
+    ? (fields.body || it.text || mod.title || '')
+    : (fields.org || (it.title || it.text || '').split(' ｜ ')[0]);
+  const one = String(raw).replace(/\s+/g, ' ').trim().replace(/^[-•·\s]+/, '');
+  if (!one) return '（空）';
+  return one.length > CARD_TITLE_MAX ? one.slice(0, CARD_TITLE_MAX) + '…' : one;
+}
+
 export function renderStructureTree(box, rd, opts = {}) {
   const { onLocate, onRewriteItem, onRewriteMod, onChanged, onSave, onInsertStory, getSelected, focusItem } = opts;
   const selected = getSelected?.() || opts.selected || '';
   const mods = rd.modules();
+  const headUser = rd.primary()?.querySelector('.user');
+  const mediaSwitch = (kind, label, on) => '<button type="button" class="' + (on ? 'active' : '') + '" data-a="toggle-media" data-kind="' + kind + '" title="点击' + (on ? '隐藏' : '显示') + label + '">' + icon(on ? 'eye' : 'eyeOff') + label + '</button>';
+  const headCard = headUser
+    ? '<div class="ol-mod"><div class="ol-mod-head">' + icon('image') + '<span class="ol-name">页眉 · 头像与校徽</span></div>'
+      + '<div class="ol-switch"><div class="btn-group compact">'
+      + mediaSwitch('avatar', '头像', !headUser.classList.contains('rp-no-avatar'))
+      + mediaSwitch('school', '校徽', !headUser.classList.contains('rp-no-school'))
+      + '</div></div></div>'
+    : '';
   const headActs = (m) => {
     return '<span class="ol-acts">'
       + '<button class="btn xs ghost icon act" data-a="up" data-mod="' + esc(m.id) + '" title="上移">' + icon('up') + '</button>'
@@ -94,16 +123,14 @@ export function renderStructureTree(box, rd, opts = {}) {
   };
 
   box.innerHTML = '<h4>简历结构 <span class="n" style="text-transform:none;letter-spacing:0;font-weight:500">每条经历一张填报卡片</span></h4>'
+    + headCard
     + mods.map((m) => {
       return '<div class="ol-mod' + (m.hidden ? ' hidden-mod' : '') + '" data-mod="' + esc(m.id) + '">'
         + '<div class="ol-mod-head" data-mod="' + esc(m.id) + '" draggable="true" title="拖动标题栏调整模块顺序">' + icon('layers') + '<span class="ol-name" title="双击重命名">' + esc(m.title) + '</span><span class="n">' + m.items.length + '</span>' + headActs(m) + '</div>'
         + m.items.map((it) => {
           const kind = kindOf(it);
           const fields = it.fields || {};
-          const title = (kind === 'body'
-            ? (fields.body || it.text || m.title || '（空）').split('\n')[0]
-            : (fields.org || (it.title || it.text || '（空）').split(' ｜ ')[0])
-          ).slice(0, 28) || '（空）';
+          const title = cardTitle(it, fields, m, kind);
           return '<div class="ol-card" data-item="' + esc(it.id) + '" data-kind="' + kind + '">'
             + '<div class="ol-card-head" data-item="' + esc(it.id) + '"><span class="ol-card-title" title="' + esc(it.title || (it.text || "").slice(0, 40)) + '">' + esc(title) + '</span>' + itemActs(it) + '</div>'
             + cardBody(it)
@@ -152,6 +179,14 @@ export function renderStructureTree(box, rd, opts = {}) {
 
     const btn = e.target.closest('[data-a]');
     const act = btn?.dataset.a;
+    if (act === 'toggle-media') {
+      const kind = btn.dataset.kind;
+      const cls = kind === 'avatar' ? 'rp-no-avatar' : 'rp-no-school';
+      const shown = !rd.primary()?.querySelector('.user')?.classList.contains(cls);
+      rd.snapshot();
+      setHeaderMediaVisible(rd, kind, !shown);
+      return changed();
+    }
     if (act === 'up') { rd.moveModule(btn.dataset.mod, -1); return changed(); }
     if (act === 'down') { rd.moveModule(btn.dataset.mod, 1); return changed(); }
     if (act === 'hide') {

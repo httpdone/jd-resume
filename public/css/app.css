@@ -531,8 +531,8 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
   display: flex; gap: 0; opacity: 0; transition: opacity .15s;
   background: var(--panel); border-radius: 8px; padding: 0 2px; z-index: 2;
 }
-.ol-mod:hover .ol-acts, .ol-item:hover .ol-acts, .ol-li:hover .ol-acts, .ol-card:hover .ol-acts,
-.ol-mod-head:focus-within .ol-acts, .ol-item:focus-within .ol-acts, .ol-card:focus-within .ol-acts, .ol-card.active .ol-acts { opacity: 1; }
+.ol-mod-head:hover .ol-acts, .ol-item:hover .ol-acts, .ol-li:hover .ol-acts,
+.ol-mod-head:focus-within .ol-acts, .ol-item:focus-within .ol-acts { opacity: 1; }
 .ol-item { display: flex; align-items: center; gap: 6px; padding: 5px 8px 5px 22px; border-radius: 8px; cursor: pointer; font-size: 12.5px; }
 .ol-item:hover { background: var(--hover); }
 .ol-item .ol-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -566,7 +566,10 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   color: var(--text);
 }
-.ol-card .ol-acts { position: absolute; right: 0; top: -2px; }
+.ol-card-head .ol-acts { position: static; transform: none; flex: 0 0 auto; margin-left: auto; display: flex; align-items: center; }
+.ol-switch { padding: 0 8px 8px 8px; }
+.ol-switch .btn-group { width: 100%; box-sizing: border-box; }
+.ol-switch .btn-group button { flex: 1; justify-content: center; }
 .ol-form { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; }
 .ol-form .ol-f { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .ol-form .ol-f.span-2 { grid-column: 1 / -1; }
@@ -574,8 +577,11 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
 .ol-form input.input, .ol-form textarea.input { height: 28px; font-size: 12px; padding: 0 7px; border-radius: 7px; width: 100%; box-sizing: border-box; }
 .ol-form textarea.input { height: auto; min-height: 52px; padding: 6px 7px; resize: vertical; line-height: 1.45; }
 .ol-card .ol-bullets { padding: 6px 0 0; }
-.ol-card .ol-li { display: flex; gap: 4px; align-items: flex-start; padding: 3px 0; }
-.ol-card .ol-li textarea { flex: 1; min-height: 36px; font-size: 12px; padding: 5px 7px; border-radius: 7px; resize: vertical; line-height: 1.4; }
+.ol-card .ol-li { position: relative; display: flex; gap: 4px; align-items: flex-start; padding: 3px 0; }
+.ol-card .ol-li textarea { flex: 1; min-width: 0; min-height: 72px; font-size: 12px; padding: 5px 7px; border-radius: 7px; resize: vertical; line-height: 1.4; color: var(--text); }
+/* 操作栏浮在要点框上方（不压文字、不占宽度），只有悬停的那一条才显示 */
+.ol-card .ol-li .ol-acts { top: -24px; right: 4px; transform: none; pointer-events: none; }
+.ol-card .ol-li:hover .ol-acts { pointer-events: auto; }
 
 
 .rp-ref {

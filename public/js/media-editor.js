@@ -156,7 +156,8 @@ export function bindResumeMedia(rd, slug, { onChange, onSave } = {}) {
     const schoolImg = user.querySelector('.user-school img');
     const avHost = user.querySelector('.user-avatar') || user;
     const scHost = user.querySelector('.user-school');
-    if (!hasAsset(avatarImg)) {
+    // 结构树里关掉头像 / 校徽时不再显示添加占位
+    if (!hasAsset(avatarImg) && !user.classList.contains('rp-no-avatar')) {
       const anchor = avHost && avHost.getBoundingClientRect().width > 8 ? avHost : user;
       const box = intersectVisible(boxOf(anchor, iframe, ov.wrap), iframe, ov.wrap);
       if (box) {
@@ -167,7 +168,7 @@ export function bindResumeMedia(rd, slug, { onChange, onSave } = {}) {
         if (last) applyBox(last, { left: box.left, top: box.top, width: w, height: box.height });
       }
     }
-    if (!hasAsset(schoolImg)) {
+    if (!hasAsset(schoolImg) && !user.classList.contains('rp-no-school')) {
       const ubox = intersectVisible(boxOf(user, iframe, ov.wrap), iframe, ov.wrap);
       if (ubox) {
         const w = Math.min(96, Math.max(64, ubox.height * 0.7));
